@@ -91,7 +91,7 @@ h2 { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -.0
 /* ─── Metrics grid ───────────────────────────────────────────────────────── */
 .metrics {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px; margin-bottom: 16px;
 }
 .metric-card {
@@ -225,6 +225,10 @@ h2 { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -.0
 .pill-Not-interested      { background: #1e0a0a; color: #f87171; border-color: #7f1d1d; }
 .pill-DQ                  { background: #1a1a1a; color: #666; border-color: #333; }
 .pill-Converted           { background: #00241a; color: #4ade80; border-color: #166534; }
+.pill-Meeting-happened    { background: #001a2e; color: #38bdf8; border-color: #075985; }
+.pill-Founding-offer      { background: #1a0a2e; color: #c084fc; border-color: #6b21a8; }
+.pill-Pilot               { background: #0a1a2e; color: #60a5fa; border-color: #1d4ed8; }
+.pill-Retainer            { background: #0a2a1a; color: #86efac; border-color: #15803d; }
 
 /* ─── Priority table ─────────────────────────────────────────────────────── */
 .priority-table-wrap { overflow-x: auto; }
@@ -335,7 +339,6 @@ h2 { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -.0
 
 /* ─── Responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 1100px) {
-  .metrics { grid-template-columns: repeat(3, 1fr); }
   .two-col { grid-template-columns: 1fr; }
 }
 @media (max-width: 700px) {
@@ -351,90 +354,7 @@ h2 { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -.0
   .header-actions { width: 100%; }
 }
 
-/* ─── Live tracker panel ─────────────────────────────────────────────────── */
-.tracker-panel {
-  background: var(--panel); border: 1px solid var(--line);
-  border-radius: 12px; margin-bottom: 16px; overflow: hidden;
-}
-.tracker-panel-head {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 18px; border-bottom: 1px solid var(--line);
-  cursor: pointer; user-select: none; gap: 12px; flex-wrap: wrap;
-}
-.tracker-panel-head:hover { background: #1a1a1a; }
-.tracker-panel-title { display: flex; align-items: center; gap: 10px; }
-.tracker-panel-title h2 { font-size: 14px; font-weight: 700; color: var(--white); }
-.tracker-live-dot {
-  width: 7px; height: 7px; border-radius: 50%; background: var(--green);
-  animation: pulse-dot 2s infinite;
-}
-@keyframes pulse-dot {
-  0%,100% { opacity: 1; } 50% { opacity: .35; }
-}
-.tracker-panel-meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-.tracker-panel-meta .tpm { font-size: 11px; color: var(--muted); }
-.tracker-panel-meta .tpm b { color: var(--text); font-weight: 700; }
-.tracker-toggle-btn {
-  background: none; border: 1px solid var(--line2); border-radius: 6px;
-  color: var(--muted); font-size: 11px; padding: 4px 10px; white-space: nowrap;
-}
-.tracker-toggle-btn:hover { border-color: #555; color: var(--text); }
-.tracker-panel-body { padding: 16px 18px; }
-.tracker-panel-body.hidden { display: none; }
 
-.tp-stat-row {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(100px,1fr));
-  gap: 8px; margin-bottom: 14px;
-}
-.tp-stat {
-  background: #1a1a1a; border: 1px solid var(--line); border-radius: 8px;
-  padding: 10px 12px; cursor: pointer; transition: border-color .12s;
-}
-.tp-stat:hover { border-color: #444; }
-.tp-stat.tp-active { border-color: var(--blue); background: #0d1929; }
-.tp-stat-label { font-size: 10px; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: .06em; }
-.tp-stat-val { font-size: 20px; font-weight: 800; letter-spacing: -.04em; color: var(--white); line-height: 1; }
-.tp-stat.tp-active .tp-stat-val { color: var(--blue); }
-.tp-stat-sub { font-size: 10px; color: var(--muted); margin-top: 2px; }
-.tp-stat.good .tp-stat-val { color: var(--green); }
-.tp-stat.warn .tp-stat-val { color: var(--amber); }
-.tp-stat.bad  .tp-stat-val { color: var(--red); }
-
-.tp-bars { margin-bottom: 14px; }
-.tp-bar-row {
-  display: flex; align-items: center; gap: 8px; margin-bottom: 5px;
-  cursor: pointer; padding: 3px 5px; border-radius: 5px;
-}
-.tp-bar-row:hover { background: #1e1e1e; }
-.tp-bar-label { font-size: 11px; color: var(--text); width: 140px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tp-bar-track { flex: 1; height: 5px; background: #222; border-radius: 3px; overflow: hidden; }
-.tp-bar-fill { height: 100%; border-radius: 3px; }
-.tp-bar-n { font-size: 11px; color: var(--muted); width: 26px; text-align: right; flex-shrink: 0; }
-
-.tp-search-row {
-  display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; align-items: center;
-}
-.tp-search { flex: 1; min-width: 160px; background: var(--panel); border: 1px solid var(--line2); border-radius: 7px; padding: 7px 10px; color: var(--text); font-size: 12px; }
-.tp-search:focus { outline: none; border-color: var(--blue); }
-.tp-drop { background: var(--panel); border: 1px solid var(--line2); border-radius: 7px; padding: 7px 10px; color: var(--text); font-size: 12px; }
-.tp-drop option { background: var(--panel); }
-.tp-clear { font-size: 11px; color: var(--blue); background: none; border: 0; padding: 0; }
-.tp-clear:hover { text-decoration: underline; }
-.tp-active-tag { font-size: 11px; color: var(--blue); }
-
-.tp-table-wrap { overflow-x: auto; }
-.tp-table { width: 100%; border-collapse: collapse; min-width: 600px; }
-.tp-table th { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: left; font-weight: 600; }
-.tp-table td { padding: 8px; border-bottom: 1px solid var(--line); font-size: 12px; vertical-align: top; }
-.tp-table tbody tr:hover td { background: #1a1a1a; }
-.tp-table .tp-empty { text-align: center; color: var(--muted); padding: 20px; }
-.tp-name { font-weight: 600; white-space: nowrap; }
-.tp-notes { max-width: 220px; color: #bbb; font-size: 11px; }
-
-@media (max-width: 700px) {
-  .tp-stat-row { grid-template-columns: repeat(2,1fr); }
-  .tp-bar-label { width: 110px; }
-}
 </style>
 </head>
 <body>
@@ -454,35 +374,6 @@ h2 { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -.0
       <input id="fileInput" type="file" accept=".csv,text/csv" hidden>
     </div>
   </header>
-
-  <!-- ─── Live tracker panel ──────────────────────────────────────────────── -->
-  <!-- Reads from the same localStorage as the dashboard. Auto-refreshes every 3s. -->
-  <div class="tracker-panel" id="liveTrackerPanel">
-    <div class="tracker-panel-head" id="liveTrackerToggle">
-      <div class="tracker-panel-title">
-        <span class="tracker-live-dot" aria-hidden="true"></span>
-        <h2>Live outreach tracker</h2>
-      </div>
-      <div class="tracker-panel-meta" id="liveTrackerMeta"></div>
-      <button class="tracker-toggle-btn" id="liveTrackerBtn" type="button">Hide</button>
-    </div>
-    <div class="tracker-panel-body" id="liveTrackerBody">
-      <div class="tp-stat-row" id="tpStats"></div>
-      <div class="tp-bars" id="tpBars"></div>
-      <div class="tp-search-row">
-        <input class="tp-search" id="tpSearch" placeholder="Search name, company, notes…" autocomplete="off" oninput="tpFilter()">
-        <select class="tp-drop" id="tpDrop" onchange="tpFilter()"><option value="">All statuses</option></select>
-        <button class="tp-clear" id="tpClearBtn" type="button" onclick="tpClear()" style="display:none">Clear filter</button>
-        <span class="tp-active-tag" id="tpActiveTag"></span>
-      </div>
-      <div class="tp-table-wrap">
-        <table class="tp-table">
-          <thead><tr><th>Name</th><th>Company</th><th>Status</th><th>Date</th><th>Notes / next action</th></tr></thead>
-          <tbody id="tpRows"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
 
   <!-- ─── Metrics ─────────────────────────────────────────────────────────── -->
   <section class="metrics" id="metrics" aria-label="Pipeline metrics"></section>
@@ -623,7 +514,7 @@ h2 { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -.0
         <label>Name *<input class="input" name="name" required autocomplete="off"></label>
         <label>Company<input class="input" name="company" autocomplete="off"></label>
         <label>Role<input class="input" name="role" autocomplete="off"></label>
-        <label>LinkedIn URL<input class="input" name="url" type="url" autocomplete="off"></label>
+        <label>LinkedIn URL *<input class="input" name="url" type="url" autocomplete="off" required placeholder="https://linkedin.com/in/…"></label>
         <label>Outreach date<input class="input" name="date" type="date"></label>
         <label>Status<select class="select" name="status" id="formStatus"></select></label>
         <label>Message type<input class="input" name="message_type" value="Connected message" autocomplete="off"></label>
@@ -694,11 +585,15 @@ var STATUSES = [
   "Connected",
   "Contacted",
   "Interested",
-  "Follow-up",
   "Meeting booked",
+  "Meeting happened",
+  "Follow-up",
   "Not interested",
   "DQ",
-  "Converted"
+  "Converted",
+  "Founding offer",
+  "Pilot",
+  "Retainer"
 ];
 
 /*
@@ -706,8 +601,9 @@ var STATUSES = [
  * Used for daily target calculations.
  */
 var REACHED_STATUSES = [
-  "Contacted","Interested","Follow-up","Meeting booked",
-  "Not interested","DQ","Converted","Connected"
+  "Contacted","Interested","Follow-up","Meeting booked","Meeting happened",
+  "Not interested","DQ","Converted","Connected",
+  "Founding offer","Pilot","Retainer"
 ];
 
 /*
@@ -718,7 +614,7 @@ var PENDING_STATUSES = ["Researching","Connection request sent"];
 /*
  * Priority queue statuses (shown in the priority table).
  */
-var PRIORITY_STATUSES = ["Interested","Follow-up","Meeting booked"];
+var PRIORITY_STATUSES = ["Interested","Follow-up","Meeting booked","Meeting happened","Founding offer","Pilot","Retainer"];
 
 /*
  * Legacy status → canonical status mapping (migration).
@@ -735,7 +631,10 @@ var STATUS_MAP = {
   "Won"                    : "Converted",
   "Lost"                   : "Not interested",
   "Not Interested"         : "Not interested",
-  "Ready to contact"       : "Researching"
+  "Ready to contact"       : "Researching",
+  "Meeting Done"           : "Meeting happened",
+  "Meeting Happened"       : "Meeting happened",
+  "Founding Offer"         : "Founding offer"
 };
 
 /* ─── State ─────────────────────────────────────────────────────────────── */
@@ -1087,36 +986,56 @@ var metricBtn = function (label, value, meta, type, filterValue, klass) {
 
 var renderMetrics = function () {
   var total   = state.leads.length;
-  var reached = state.leads.filter(isReached).length;
   var todayN  = countOnDate(today());
   var pending = Math.max(0, state.settings.dailyTarget - todayN);
-  var tt      = totalTarget();
 
-  var interested   = state.leads.filter(function (x) { return x.status === "Interested"; }).length;
-  var followups    = state.leads.filter(function (x) { return x.status === "Follow-up"; }).length;
-  var meetings     = state.leads.filter(function (x) { return x.status === "Meeting booked"; }).length;
-  var notInt       = state.leads.filter(function (x) { return x.status === "Not interested"; }).length;
-  var dq           = state.leads.filter(function (x) { return x.status === "DQ"; }).length;
-  var responses    = state.leads.filter(function (x) {
-    return ["Interested","Follow-up","Meeting booked","Not interested","Converted"].indexOf(x.status) >= 0;
-  }).length;
+  var count = function (statuses) {
+    return state.leads.filter(function (x) { return statuses.indexOf(x.status) >= 0; }).length;
+  };
+
+  var interested    = count(["Interested"]);
+  var followups     = count(["Follow-up"]);
+  var meetBooked    = count(["Meeting booked"]);
+  var meetHappened  = count(["Meeting happened"]);
+  var notInt        = count(["Not interested"]);
+  var dq            = count(["DQ"]);
+  var converted     = count(["Converted"]);
+  var foundingOffer = count(["Founding offer"]);
+  var pilot         = count(["Pilot"]);
+  var retainer      = count(["Retainer"]);
+
+  /* Positive responses = interested + all meeting stages + offer/pilot/retainer */
+  var posResponses  = count(["Interested","Meeting booked","Meeting happened","Founding offer","Pilot","Retainer","Converted"]);
 
   var pct = function (n, d) {
     return d ? Math.round(n / d * 100) + "%" : "0%";
   };
 
+  /* Row 1: Daily target | Reached today | Pending today */
+  /* Row 2: Total leads  | Positive responses | Not interested */
+  /* Row 3: Interested   | Meeting booked | Meeting happened */
+  /* Row 4: Follow-up    | DQ | Converted */
+  /* Row 5: Founding offer | Pilot | Retainer */
   $("metrics").innerHTML =
-    metricBtn("Daily target",     state.settings.dailyTarget,   "per active day",                       "all",    "",               "") +
-    metricBtn("Reached today",    todayN,   todayN + " / " + state.settings.dailyTarget + " (" + pct(todayN, state.settings.dailyTarget) + ")", "today",  "",  "good") +
-    metricBtn("Pending today",    pending,  pct(pending, state.settings.dailyTarget) + " of today",     "pending","",               "warn") +
-    metricBtn("Total target",     tt,       reached + " reached (" + pct(reached, tt) + ")",            "all",    "",               "") +
-    metricBtn("Total leads",      total,    "100% of imported records",                                 "all",    "",               "") +
-    metricBtn("Responses",        responses,pct(responses, total || 1) + " of leads",                   "status", "Interested",     "") +
-    metricBtn("Interested",       interested, pct(interested, total || 1) + " of leads",               "status", "Interested",     "good") +
-    metricBtn("Follow-ups",       followups,  pct(followups,  total || 1) + " of leads",               "status", "Follow-up",      "warn") +
-    metricBtn("Meetings booked",  meetings,   pct(meetings,   total || 1) + " of leads",               "status", "Meeting booked", "good") +
-    metricBtn("Not interested",   notInt,     pct(notInt,     total || 1) + " of leads",               "status", "Not interested", "danger") +
-    metricBtn("DQ",               dq,         pct(dq,         total || 1) + " of leads",               "status", "DQ",             "");
+    metricBtn("Daily target",      state.settings.dailyTarget, "per active day",                                          "all",    "",                "") +
+    metricBtn("Reached today",     todayN,   todayN + " / " + state.settings.dailyTarget + " (" + pct(todayN, state.settings.dailyTarget) + ")", "today", "", "good") +
+    metricBtn("Pending today",     pending,  pct(pending, state.settings.dailyTarget) + " of today",                     "pending","",                "warn") +
+
+    metricBtn("Total leads",       total,        "100% of records",                                                       "all",    "",                "") +
+    metricBtn("Positive responses",posResponses,  pct(posResponses, total || 1) + " of leads",                           "status", "Interested",      "good") +
+    metricBtn("Not interested",    notInt,        pct(notInt,        total || 1) + " of leads",                           "status", "Not interested",  "danger") +
+
+    metricBtn("Interested",        interested,    pct(interested,    total || 1) + " of leads",                           "status", "Interested",      "good") +
+    metricBtn("Meeting booked",    meetBooked,    pct(meetBooked,    total || 1) + " of leads",                           "status", "Meeting booked",  "good") +
+    metricBtn("Meeting happened",  meetHappened,  pct(meetHappened,  total || 1) + " of leads",                           "status", "Meeting happened","good") +
+
+    metricBtn("Follow-up",         followups,     pct(followups,     total || 1) + " of leads",                           "status", "Follow-up",       "warn") +
+    metricBtn("DQ",                dq,            pct(dq,            total || 1) + " of leads",                           "status", "DQ",              "") +
+    metricBtn("Converted",         converted,     pct(converted,     total || 1) + " of leads",                           "status", "Converted",       "good") +
+
+    metricBtn("Founding offer",    foundingOffer, pct(foundingOffer, total || 1) + " of leads",                           "status", "Founding offer",  "good") +
+    metricBtn("Pilot",             pilot,         pct(pilot,         total || 1) + " of leads",                           "status", "Pilot",           "good") +
+    metricBtn("Retainer",          retainer,      pct(retainer,      total || 1) + " of leads",                           "status", "Retainer",        "good");
 };
 
 /* ─── Render: Heatmap ────────────────────────────────────────────────────── */
@@ -1184,7 +1103,7 @@ var renderHeatmap = function () {
     '<span class="tracker-stat"><b>' + bestDay() + '</b> best day</span>';
 };
 
-/* ─── Render: Chart ──────────────────────────────────────────────────────── */
+/* ─── Render: Chart (bar graph) ──────────────────────────────────────────── */
 var renderChart = function () {
   var dates = Array.from(new Set(
     state.leads.map(function (x) { return x.date; }).filter(Boolean)
@@ -1196,25 +1115,21 @@ var renderChart = function () {
     return;
   }
 
-  $("chartRange").textContent = dates[0] + " → " + dates[dates.length - 1];
+  $("chartRange").textContent = dates[0] + " to " + dates[dates.length - 1];
 
   var vals = dates.map(countOnDate);
   var tgt  = state.settings.dailyTarget;
   var max  = Math.max(tgt, Math.max.apply(null, vals.concat([1])));
 
-  var W = 900, H = 220, L = 38, R = 12, T = 14, B = 28;
+  var W = 900, H = 220, L = 38, R = 12, T = 14, B = 30;
   var iW = W - L - R, iH = H - T - B;
+  var n = dates.length;
 
-  var xPos = function (i) {
-    return L + (dates.length === 1 ? iW / 2 : i / (dates.length - 1) * iW);
-  };
-  var yPos = function (v) { return T + iH - v / max * iH; };
-
-  /* Target line */
-  var tgtY = yPos(tgt);
-  var tgtLine = '<line stroke="#333" stroke-dasharray="4 3" x1="' + L +
-    '" y1="' + tgtY + '" x2="' + (W - R) + '" y2="' + tgtY + '"></line>' +
-    '<text x="3" y="' + (tgtY + 4) + '" fill="#555" font-size="10">Target</text>';
+  /* Bar geometry */
+  var barW   = Math.max(2, Math.min(28, iW / n - 3));
+  var colW   = iW / n;
+  var yPos   = function (v) { return T + iH - v / max * iH; };
+  var xMid   = function (i) { return L + colW * i + colW / 2; };
 
   /* Grid lines */
   var grid = [0, .25, .5, .75, 1].map(function (q) {
@@ -1224,37 +1139,46 @@ var renderChart = function () {
            '<text x="3" y="' + (yy + 4) + '">' + Math.round(max * q) + '</text>';
   }).join("");
 
-  /* Area + line path */
-  var pts = vals.map(function (v, i) { return xPos(i) + "," + yPos(v); }).join(" ");
-  var areaPath = "M " + L + "," + yPos(0) + " L " + pts.split(" ").join(" L ") +
-    " L " + xPos(dates.length - 1) + "," + yPos(0) + " Z";
+  /* Target dashed line */
+  var tgtY    = yPos(tgt);
+  var tgtLine = '<line stroke="#444" stroke-dasharray="4 3" x1="' + L +
+    '" y1="' + tgtY + '" x2="' + (W - R) + '" y2="' + tgtY + '"></line>' +
+    '<text x="' + (L + 4) + '" y="' + (tgtY - 4) + '" fill="#555" font-size="10">Target ' + tgt + '</text>';
 
-  /* X-axis labels */
-  var step = dates.length > 14 ? Math.ceil(dates.length / 10) : 1;
+  /* Bars */
+  var bars = vals.map(function (v, i) {
+    var x   = xMid(i) - barW / 2;
+    var bH  = Math.max(1, v / max * iH);
+    var y   = T + iH - bH;
+    var met = v >= tgt;
+    var fill = met ? "#22c55e" : (v > 0 ? "#4c9eff" : "#222");
+    return '<rect data-date="' + dates[i] + '" x="' + x + '" y="' + y +
+           '" width="' + barW + '" height="' + bH +
+           '" fill="' + fill + '" rx="2" style="cursor:pointer">' +
+           '<title>' + esc(dates[i] + ": " + v + " reached" + (met ? " - target met" : "")) + '</title>' +
+           '</rect>';
+  }).join("");
+
+  /* Value labels on top of bars (only if bars are wide enough) */
+  var valLabels = barW >= 14 ? vals.map(function (v, i) {
+    if (v === 0) return "";
+    var y = yPos(v) - 4;
+    return '<text x="' + xMid(i) + '" y="' + y + '" text-anchor="middle" font-size="10" fill="#888">' + v + '</text>';
+  }).join("") : "";
+
+  /* X-axis labels - show every nth to avoid crowding */
+  var step = n > 14 ? Math.ceil(n / 10) : 1;
   var labels = dates.map(function (d, i) {
-    if (i % step !== 0 && i !== dates.length - 1) return "";
-    return '<text x="' + xPos(i) + '" y="' + (H - 8) + '" text-anchor="middle">' +
+    if (i % step !== 0 && i !== n - 1) return "";
+    return '<text x="' + xMid(i) + '" y="' + (H - 8) + '" text-anchor="middle">' +
       esc(d.slice(5)) + '</text>';
   }).join("");
 
-  /* Dots */
-  var dots = vals.map(function (v, i) {
-    return '<circle data-date="' + dates[i] + '" cx="' + xPos(i) +
-           '" cy="' + yPos(v) + '" r="4"><title>' +
-           esc(dates[i] + ": " + v + " reached") + '</title></circle>';
-  }).join("");
-
   $("chartWrap").innerHTML =
-    '<svg class="chart-svg" viewBox="0 0 ' + W + ' ' + H + '" aria-label="Daily outreach line chart">' +
-    '<defs><linearGradient id="chartGrad" x1="0" x2="0" y1="0" y2="1">' +
-    '<stop offset="0%" stop-color="#fff" stop-opacity=".15"/>' +
-    '<stop offset="100%" stop-color="#fff" stop-opacity="0"/>' +
-    '</linearGradient></defs>' +
+    '<svg class="chart-svg" viewBox="0 0 ' + W + ' ' + H + '" aria-label="Daily outreach bar chart">' +
     grid + tgtLine +
-    '<line class="axis" x1="' + L + '" y1="' + yPos(0) + '" x2="' + (W - R) + '" y2="' + yPos(0) + '"></line>' +
-    '<path class="area-fill" d="' + areaPath + '"></path>' +
-    '<polyline class="line-path" points="' + pts + '"></polyline>' +
-    dots + labels +
+    '<line class="axis" x1="' + L + '" y1="' + (T + iH) + '" x2="' + (W - R) + '" y2="' + (T + iH) + '"></line>' +
+    bars + valLabels + labels +
     '</svg>';
 };
 
@@ -1340,8 +1264,8 @@ var renderLeads = function () {
         '</a>' +
         '<div contenteditable="true" data-field="url" style="font-size:11px;color:var(--muted);margin-top:2px;word-break:break-all">' +
         esc(x.url) + '</div>'
-      : '<div contenteditable="true" data-field="url" style="font-size:11px;color:var(--muted)">' +
-        esc(x.url || "") + '</div>';
+      : '<div contenteditable="true" data-field="url" style="font-size:11px;color:var(--red);border:1px dashed #4a1515;border-radius:4px;padding:2px 5px">' +
+        'Required - add LinkedIn URL</div>';
 
     return '<tr data-id="' + attr(x.id) + '">' +
       '<td class="cell-name" contenteditable="true" data-field="name">' + esc(x.name) + '</td>' +
@@ -1667,187 +1591,7 @@ load();
 setup();
 render();
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   LIVE TRACKER PANEL
-   Reads directly from state.leads (same data as the dashboard).
-   Re-renders whenever the main dashboard re-renders, and also on a 3s poll
-   so it stays current after any inline edit or import.
-   ═══════════════════════════════════════════════════════════════════════════ */
-(function () {
 
-  /* Panel collapse / expand */
-  var open = true;
-  $("liveTrackerToggle").onclick = function (e) {
-    if (e.target === $("liveTrackerBtn") || e.target.closest("#liveTrackerBtn")) return;
-    togglePanel();
-  };
-  $("liveTrackerBtn").onclick = function (e) {
-    e.stopPropagation();
-    togglePanel();
-  };
-  function togglePanel() {
-    open = !open;
-    $("liveTrackerBody").classList.toggle("hidden", !open);
-    $("liveTrackerBtn").textContent = open ? "Hide" : "Show";
-  }
-
-  /* Tracker-local filter state (independent of main dashboard filter) */
-  var tpFilterStatus = "";
-
-  /* Populate status dropdown once */
-  var tpDropReady = false;
-  function ensureDrop() {
-    if (tpDropReady) return;
-    STATUSES.forEach(function (s) {
-      var o = document.createElement("option");
-      o.value = s; o.textContent = s;
-      $("tpDrop").appendChild(o);
-    });
-    tpDropReady = true;
-  }
-
-  /* Bar colour by status */
-  function barColor(status) {
-    if (["Interested","Converted","Meeting booked"].indexOf(status) >= 0) return var_("--green");
-    if (["Follow-up","Contacted","Connected","Connection request sent"].indexOf(status) >= 0) return var_("--amber");
-    if (["Not interested","DQ"].indexOf(status) >= 0) return var_("--red");
-    return "#333";
-  }
-  function var_(name) {
-    return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || "#666";
-  }
-
-  /* ── Main render ──────────────────────────────────────────────────────── */
-  function tpRender() {
-    ensureDrop();
-    var leads   = state.leads;
-    var total   = leads.length;
-    var td      = today();
-    var tgt     = state.settings.dailyTarget;
-
-    var reached = leads.filter(isReached);
-    var todayN  = countOnDate(td);
-    var interested  = leads.filter(function (x) { return x.status === "Interested"; }).length;
-    var followups   = leads.filter(function (x) { return x.status === "Follow-up"; }).length;
-    var meetings    = leads.filter(function (x) { return x.status === "Meeting booked"; }).length;
-    var notInt      = leads.filter(function (x) { return x.status === "Not interested"; }).length;
-    var dq          = leads.filter(function (x) { return x.status === "DQ"; }).length;
-    var responses   = leads.filter(function (x) {
-      return ["Interested","Follow-up","Meeting booked","Not interested","Converted"].indexOf(x.status) >= 0;
-    }).length;
-
-    function pct(n, d) { return d ? Math.round(n / d * 100) + "%" : "0%"; }
-
-    /* Header meta strip */
-    $("liveTrackerMeta").innerHTML =
-      '<span class="tpm">Today <b>' + todayN + ' / ' + tgt + '</b></span>' +
-      '<span class="tpm">Total <b>' + total + '</b></span>' +
-      '<span class="tpm">Reached <b>' + reached.length + '</b></span>' +
-      '<span class="tpm">Responses <b>' + responses + '</b></span>';
-
-    /* Stat cards */
-    function statCard(label, val, sub, clickStatus, klass) {
-      var active = tpFilterStatus === clickStatus && clickStatus;
-      return '<div class="tp-stat' + (klass ? " " + klass : "") + (active ? " tp-active" : "") +
-        '" onclick="tpSetFilter(\'' + attr(clickStatus) + '\')">' +
-        '<div class="tp-stat-label">' + esc(label) + '</div>' +
-        '<div class="tp-stat-val">' + esc(String(val)) + '</div>' +
-        '<div class="tp-stat-sub">' + esc(sub) + '</div></div>';
-    }
-
-    $("tpStats").innerHTML =
-      statCard("Total leads",    total,         "100% of records",               "",               "") +
-      statCard("Reached",        reached.length, pct(reached.length, total),     "",               "") +
-      statCard("Responses",      responses,      pct(responses, total),           "",               "") +
-      statCard("Interested",     interested,     pct(interested, total),          "Interested",     "good") +
-      statCard("Follow-up",      followups,      pct(followups, total),           "Follow-up",      "warn") +
-      statCard("Meetings",       meetings,       pct(meetings, total),            "Meeting booked", "good") +
-      statCard("Not interested", notInt,         pct(notInt, total),              "Not interested", "bad") +
-      statCard("DQ",             dq,             pct(dq, total),                  "DQ",             "");
-
-    /* Status bars */
-    var counts = {};
-    STATUSES.forEach(function (s) { counts[s] = 0; });
-    leads.forEach(function (x) { if (counts[x.status] !== undefined) counts[x.status]++; });
-    var maxC = Math.max.apply(null, Object.keys(counts).map(function (k) { return counts[k]; }).concat([1]));
-
-    $("tpBars").innerHTML = STATUSES
-      .filter(function (s) { return counts[s] > 0; })
-      .sort(function (a, b) { return counts[b] - counts[a]; })
-      .map(function (s) {
-        var w = Math.round(counts[s] / maxC * 100);
-        return '<div class="tp-bar-row" onclick="tpSetFilter(\'' + attr(s) + '\')">' +
-          '<div class="tp-bar-label">' + esc(s) + '</div>' +
-          '<div class="tp-bar-track"><div class="tp-bar-fill" style="width:' + w + '%;background:' + barColor(s) + '"></div></div>' +
-          '<div class="tp-bar-n">' + counts[s] + '</div></div>';
-      }).join("");
-
-    tpFilter();
-  }
-
-  /* ── Filtered table render ────────────────────────────────────────────── */
-  window.tpFilter = function () {
-    var q  = ($("tpSearch").value || "").trim().toLowerCase();
-    var sf = $("tpDrop").value || tpFilterStatus;
-    tpFilterStatus = sf;
-
-    var hasFilt = !!(q || sf);
-    $("tpClearBtn").style.display  = hasFilt ? "inline" : "none";
-    $("tpActiveTag").textContent   = sf ? "Filtered: " + sf : (q ? "Search active" : "");
-
-    var list = state.leads.filter(function (x) {
-      if (q) {
-        var hay = [x.name, x.company, x.role, x.status, x.notes, x.next_action, x.date].join(" ").toLowerCase();
-        if (hay.indexOf(q) < 0) return false;
-      }
-      if (sf && x.status !== sf) return false;
-      return true;
-    }).sort(function (a, b) {
-      return String(b.date || "").localeCompare(String(a.date || "")) || a.name.localeCompare(b.name);
-    });
-
-    $("tpRows").innerHTML = list.map(function (x) {
-      var noteText = display(x.next_action || x.notes, "");
-      if (noteText.length > 100) noteText = noteText.slice(0, 100) + "...";
-      return '<tr>' +
-        '<td class="tp-name">' +
-          (x.url ? '<a href="' + attr(x.url) + '" target="_blank" rel="noopener">' + esc(x.name) + '</a>' : esc(x.name)) +
-        '</td>' +
-        '<td style="color:#ccc">' + esc(display(x.company, "")) + '</td>' +
-        '<td>' + pillHtml(x.status) + '</td>' +
-        '<td style="color:var(--muted);white-space:nowrap">' + esc(x.date || "") + '</td>' +
-        '<td class="tp-notes">' + esc(noteText) + '</td>' +
-        '</tr>';
-    }).join("") || '<tr><td class="tp-empty" colspan="5">No leads match this filter.</td></tr>';
-  };
-
-  /* ── Filter controls ──────────────────────────────────────────────────── */
-  window.tpSetFilter = function (status) {
-    tpFilterStatus = tpFilterStatus === status ? "" : status;
-    $("tpDrop").value = tpFilterStatus;
-    tpFilter();
-    tpRender(); /* refresh card active states */
-  };
-
-  window.tpClear = function () {
-    tpFilterStatus = "";
-    $("tpSearch").value = "";
-    $("tpDrop").value = "";
-    tpFilter();
-    tpRender();
-  };
-
-  /* ── Hook into main render so tracker always stays in sync ───────────── */
-  var _origRender = render;
-  render = function () {
-    _origRender();
-    tpRender();
-  };
-
-  /* ── Initial render ───────────────────────────────────────────────────── */
-  tpRender();
-
-})();
 
 })();
 </script>
