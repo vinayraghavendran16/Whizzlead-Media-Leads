@@ -350,6 +350,91 @@ h2 { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -.0
   .filter-select { flex: 1; }
   .header-actions { width: 100%; }
 }
+
+/* ─── Live tracker panel ─────────────────────────────────────────────────── */
+.tracker-panel {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 12px; margin-bottom: 16px; overflow: hidden;
+}
+.tracker-panel-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; border-bottom: 1px solid var(--line);
+  cursor: pointer; user-select: none; gap: 12px; flex-wrap: wrap;
+}
+.tracker-panel-head:hover { background: #1a1a1a; }
+.tracker-panel-title { display: flex; align-items: center; gap: 10px; }
+.tracker-panel-title h2 { font-size: 14px; font-weight: 700; color: var(--white); }
+.tracker-live-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--green);
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity: 1; } 50% { opacity: .35; }
+}
+.tracker-panel-meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.tracker-panel-meta .tpm { font-size: 11px; color: var(--muted); }
+.tracker-panel-meta .tpm b { color: var(--text); font-weight: 700; }
+.tracker-toggle-btn {
+  background: none; border: 1px solid var(--line2); border-radius: 6px;
+  color: var(--muted); font-size: 11px; padding: 4px 10px; white-space: nowrap;
+}
+.tracker-toggle-btn:hover { border-color: #555; color: var(--text); }
+.tracker-panel-body { padding: 16px 18px; }
+.tracker-panel-body.hidden { display: none; }
+
+.tp-stat-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(100px,1fr));
+  gap: 8px; margin-bottom: 14px;
+}
+.tp-stat {
+  background: #1a1a1a; border: 1px solid var(--line); border-radius: 8px;
+  padding: 10px 12px; cursor: pointer; transition: border-color .12s;
+}
+.tp-stat:hover { border-color: #444; }
+.tp-stat.tp-active { border-color: var(--blue); background: #0d1929; }
+.tp-stat-label { font-size: 10px; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: .06em; }
+.tp-stat-val { font-size: 20px; font-weight: 800; letter-spacing: -.04em; color: var(--white); line-height: 1; }
+.tp-stat.tp-active .tp-stat-val { color: var(--blue); }
+.tp-stat-sub { font-size: 10px; color: var(--muted); margin-top: 2px; }
+.tp-stat.good .tp-stat-val { color: var(--green); }
+.tp-stat.warn .tp-stat-val { color: var(--amber); }
+.tp-stat.bad  .tp-stat-val { color: var(--red); }
+
+.tp-bars { margin-bottom: 14px; }
+.tp-bar-row {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 5px;
+  cursor: pointer; padding: 3px 5px; border-radius: 5px;
+}
+.tp-bar-row:hover { background: #1e1e1e; }
+.tp-bar-label { font-size: 11px; color: var(--text); width: 140px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tp-bar-track { flex: 1; height: 5px; background: #222; border-radius: 3px; overflow: hidden; }
+.tp-bar-fill { height: 100%; border-radius: 3px; }
+.tp-bar-n { font-size: 11px; color: var(--muted); width: 26px; text-align: right; flex-shrink: 0; }
+
+.tp-search-row {
+  display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; align-items: center;
+}
+.tp-search { flex: 1; min-width: 160px; background: var(--panel); border: 1px solid var(--line2); border-radius: 7px; padding: 7px 10px; color: var(--text); font-size: 12px; }
+.tp-search:focus { outline: none; border-color: var(--blue); }
+.tp-drop { background: var(--panel); border: 1px solid var(--line2); border-radius: 7px; padding: 7px 10px; color: var(--text); font-size: 12px; }
+.tp-drop option { background: var(--panel); }
+.tp-clear { font-size: 11px; color: var(--blue); background: none; border: 0; padding: 0; }
+.tp-clear:hover { text-decoration: underline; }
+.tp-active-tag { font-size: 11px; color: var(--blue); }
+
+.tp-table-wrap { overflow-x: auto; }
+.tp-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+.tp-table th { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: left; font-weight: 600; }
+.tp-table td { padding: 8px; border-bottom: 1px solid var(--line); font-size: 12px; vertical-align: top; }
+.tp-table tbody tr:hover td { background: #1a1a1a; }
+.tp-table .tp-empty { text-align: center; color: var(--muted); padding: 20px; }
+.tp-name { font-weight: 600; white-space: nowrap; }
+.tp-notes { max-width: 220px; color: #bbb; font-size: 11px; }
+
+@media (max-width: 700px) {
+  .tp-stat-row { grid-template-columns: repeat(2,1fr); }
+  .tp-bar-label { width: 110px; }
+}
 </style>
 </head>
 <body>
@@ -369,6 +454,35 @@ h2 { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -.0
       <input id="fileInput" type="file" accept=".csv,text/csv" hidden>
     </div>
   </header>
+
+  <!-- ─── Live tracker panel ──────────────────────────────────────────────── -->
+  <!-- Reads from the same localStorage as the dashboard. Auto-refreshes every 3s. -->
+  <div class="tracker-panel" id="liveTrackerPanel">
+    <div class="tracker-panel-head" id="liveTrackerToggle">
+      <div class="tracker-panel-title">
+        <span class="tracker-live-dot" aria-hidden="true"></span>
+        <h2>Live outreach tracker</h2>
+      </div>
+      <div class="tracker-panel-meta" id="liveTrackerMeta"></div>
+      <button class="tracker-toggle-btn" id="liveTrackerBtn" type="button">Hide</button>
+    </div>
+    <div class="tracker-panel-body" id="liveTrackerBody">
+      <div class="tp-stat-row" id="tpStats"></div>
+      <div class="tp-bars" id="tpBars"></div>
+      <div class="tp-search-row">
+        <input class="tp-search" id="tpSearch" placeholder="Search name, company, notes…" autocomplete="off" oninput="tpFilter()">
+        <select class="tp-drop" id="tpDrop" onchange="tpFilter()"><option value="">All statuses</option></select>
+        <button class="tp-clear" id="tpClearBtn" type="button" onclick="tpClear()" style="display:none">Clear filter</button>
+        <span class="tp-active-tag" id="tpActiveTag"></span>
+      </div>
+      <div class="tp-table-wrap">
+        <table class="tp-table">
+          <thead><tr><th>Name</th><th>Company</th><th>Status</th><th>Date</th><th>Notes / next action</th></tr></thead>
+          <tbody id="tpRows"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
   <!-- ─── Metrics ─────────────────────────────────────────────────────────── -->
   <section class="metrics" id="metrics" aria-label="Pipeline metrics"></section>
@@ -1552,6 +1666,188 @@ var setup = function () {
 load();
 setup();
 render();
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LIVE TRACKER PANEL
+   Reads directly from state.leads (same data as the dashboard).
+   Re-renders whenever the main dashboard re-renders, and also on a 3s poll
+   so it stays current after any inline edit or import.
+   ═══════════════════════════════════════════════════════════════════════════ */
+(function () {
+
+  /* Panel collapse / expand */
+  var open = true;
+  $("liveTrackerToggle").onclick = function (e) {
+    if (e.target === $("liveTrackerBtn") || e.target.closest("#liveTrackerBtn")) return;
+    togglePanel();
+  };
+  $("liveTrackerBtn").onclick = function (e) {
+    e.stopPropagation();
+    togglePanel();
+  };
+  function togglePanel() {
+    open = !open;
+    $("liveTrackerBody").classList.toggle("hidden", !open);
+    $("liveTrackerBtn").textContent = open ? "Hide" : "Show";
+  }
+
+  /* Tracker-local filter state (independent of main dashboard filter) */
+  var tpFilterStatus = "";
+
+  /* Populate status dropdown once */
+  var tpDropReady = false;
+  function ensureDrop() {
+    if (tpDropReady) return;
+    STATUSES.forEach(function (s) {
+      var o = document.createElement("option");
+      o.value = s; o.textContent = s;
+      $("tpDrop").appendChild(o);
+    });
+    tpDropReady = true;
+  }
+
+  /* Bar colour by status */
+  function barColor(status) {
+    if (["Interested","Converted","Meeting booked"].indexOf(status) >= 0) return var_("--green");
+    if (["Follow-up","Contacted","Connected","Connection request sent"].indexOf(status) >= 0) return var_("--amber");
+    if (["Not interested","DQ"].indexOf(status) >= 0) return var_("--red");
+    return "#333";
+  }
+  function var_(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || "#666";
+  }
+
+  /* ── Main render ──────────────────────────────────────────────────────── */
+  function tpRender() {
+    ensureDrop();
+    var leads   = state.leads;
+    var total   = leads.length;
+    var td      = today();
+    var tgt     = state.settings.dailyTarget;
+
+    var reached = leads.filter(isReached);
+    var todayN  = countOnDate(td);
+    var interested  = leads.filter(function (x) { return x.status === "Interested"; }).length;
+    var followups   = leads.filter(function (x) { return x.status === "Follow-up"; }).length;
+    var meetings    = leads.filter(function (x) { return x.status === "Meeting booked"; }).length;
+    var notInt      = leads.filter(function (x) { return x.status === "Not interested"; }).length;
+    var dq          = leads.filter(function (x) { return x.status === "DQ"; }).length;
+    var responses   = leads.filter(function (x) {
+      return ["Interested","Follow-up","Meeting booked","Not interested","Converted"].indexOf(x.status) >= 0;
+    }).length;
+
+    function pct(n, d) { return d ? Math.round(n / d * 100) + "%" : "0%"; }
+
+    /* Header meta strip */
+    $("liveTrackerMeta").innerHTML =
+      '<span class="tpm">Today <b>' + todayN + ' / ' + tgt + '</b></span>' +
+      '<span class="tpm">Total <b>' + total + '</b></span>' +
+      '<span class="tpm">Reached <b>' + reached.length + '</b></span>' +
+      '<span class="tpm">Responses <b>' + responses + '</b></span>';
+
+    /* Stat cards */
+    function statCard(label, val, sub, clickStatus, klass) {
+      var active = tpFilterStatus === clickStatus && clickStatus;
+      return '<div class="tp-stat' + (klass ? " " + klass : "") + (active ? " tp-active" : "") +
+        '" onclick="tpSetFilter(\'' + attr(clickStatus) + '\')">' +
+        '<div class="tp-stat-label">' + esc(label) + '</div>' +
+        '<div class="tp-stat-val">' + esc(String(val)) + '</div>' +
+        '<div class="tp-stat-sub">' + esc(sub) + '</div></div>';
+    }
+
+    $("tpStats").innerHTML =
+      statCard("Total leads",    total,         "100% of records",               "",               "") +
+      statCard("Reached",        reached.length, pct(reached.length, total),     "",               "") +
+      statCard("Responses",      responses,      pct(responses, total),           "",               "") +
+      statCard("Interested",     interested,     pct(interested, total),          "Interested",     "good") +
+      statCard("Follow-up",      followups,      pct(followups, total),           "Follow-up",      "warn") +
+      statCard("Meetings",       meetings,       pct(meetings, total),            "Meeting booked", "good") +
+      statCard("Not interested", notInt,         pct(notInt, total),              "Not interested", "bad") +
+      statCard("DQ",             dq,             pct(dq, total),                  "DQ",             "");
+
+    /* Status bars */
+    var counts = {};
+    STATUSES.forEach(function (s) { counts[s] = 0; });
+    leads.forEach(function (x) { if (counts[x.status] !== undefined) counts[x.status]++; });
+    var maxC = Math.max.apply(null, Object.keys(counts).map(function (k) { return counts[k]; }).concat([1]));
+
+    $("tpBars").innerHTML = STATUSES
+      .filter(function (s) { return counts[s] > 0; })
+      .sort(function (a, b) { return counts[b] - counts[a]; })
+      .map(function (s) {
+        var w = Math.round(counts[s] / maxC * 100);
+        return '<div class="tp-bar-row" onclick="tpSetFilter(\'' + attr(s) + '\')">' +
+          '<div class="tp-bar-label">' + esc(s) + '</div>' +
+          '<div class="tp-bar-track"><div class="tp-bar-fill" style="width:' + w + '%;background:' + barColor(s) + '"></div></div>' +
+          '<div class="tp-bar-n">' + counts[s] + '</div></div>';
+      }).join("");
+
+    tpFilter();
+  }
+
+  /* ── Filtered table render ────────────────────────────────────────────── */
+  window.tpFilter = function () {
+    var q  = ($("tpSearch").value || "").trim().toLowerCase();
+    var sf = $("tpDrop").value || tpFilterStatus;
+    tpFilterStatus = sf;
+
+    var hasFilt = !!(q || sf);
+    $("tpClearBtn").style.display  = hasFilt ? "inline" : "none";
+    $("tpActiveTag").textContent   = sf ? "Filtered: " + sf : (q ? "Search active" : "");
+
+    var list = state.leads.filter(function (x) {
+      if (q) {
+        var hay = [x.name, x.company, x.role, x.status, x.notes, x.next_action, x.date].join(" ").toLowerCase();
+        if (hay.indexOf(q) < 0) return false;
+      }
+      if (sf && x.status !== sf) return false;
+      return true;
+    }).sort(function (a, b) {
+      return String(b.date || "").localeCompare(String(a.date || "")) || a.name.localeCompare(b.name);
+    });
+
+    $("tpRows").innerHTML = list.map(function (x) {
+      var noteText = display(x.next_action || x.notes, "");
+      if (noteText.length > 100) noteText = noteText.slice(0, 100) + "...";
+      return '<tr>' +
+        '<td class="tp-name">' +
+          (x.url ? '<a href="' + attr(x.url) + '" target="_blank" rel="noopener">' + esc(x.name) + '</a>' : esc(x.name)) +
+        '</td>' +
+        '<td style="color:#ccc">' + esc(display(x.company, "")) + '</td>' +
+        '<td>' + pillHtml(x.status) + '</td>' +
+        '<td style="color:var(--muted);white-space:nowrap">' + esc(x.date || "") + '</td>' +
+        '<td class="tp-notes">' + esc(noteText) + '</td>' +
+        '</tr>';
+    }).join("") || '<tr><td class="tp-empty" colspan="5">No leads match this filter.</td></tr>';
+  };
+
+  /* ── Filter controls ──────────────────────────────────────────────────── */
+  window.tpSetFilter = function (status) {
+    tpFilterStatus = tpFilterStatus === status ? "" : status;
+    $("tpDrop").value = tpFilterStatus;
+    tpFilter();
+    tpRender(); /* refresh card active states */
+  };
+
+  window.tpClear = function () {
+    tpFilterStatus = "";
+    $("tpSearch").value = "";
+    $("tpDrop").value = "";
+    tpFilter();
+    tpRender();
+  };
+
+  /* ── Hook into main render so tracker always stays in sync ───────────── */
+  var _origRender = render;
+  render = function () {
+    _origRender();
+    tpRender();
+  };
+
+  /* ── Initial render ───────────────────────────────────────────────────── */
+  tpRender();
+
+})();
 
 })();
 </script>
