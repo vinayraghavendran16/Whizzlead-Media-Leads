@@ -814,6 +814,7 @@ h2 { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -.0
 <div class="toast" id="toast" role="alert"></div>
 
 <script>
+"use strict";
 /* ═══════════════════════════════════════════════════════════════════════════
    WHIZZLEAD MEDIA - LEAD COMMAND CENTRE
    Single-file, localStorage-backed dashboard. No frameworks required.
@@ -846,8 +847,6 @@ h2 { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -.0
    SETTINGS (stored in localStorage under SETTINGS_KEY):
    { dailyTarget: number, startDate: "YYYY-MM-DD" }
    ═══════════════════════════════════════════════════════════════════════════ */
-(function () {
-"use strict";
 
 /* ─── Constants ─────────────────────────────────────────────────────────── */
 var KEY          = "whizzlead_leads";
@@ -1871,8 +1870,9 @@ load();
 setup();
 render();
 
+</script>
 
-
+<script>
 /* ═══════════════════════════════════════════════════════════════════════════
    TAB SYSTEM
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -2297,6 +2297,6 @@ document.getElementById("enrichMissingBtn").onclick = function () {
 /* Initial render of enrich list */
 renderEnrichList(state.leads);
 
-
+</script>
 </body>
 </html>
