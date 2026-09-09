@@ -353,8 +353,141 @@ h2 { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -.0
   .filter-select { flex: 1; }
   .header-actions { width: 100%; }
 }
+/* ─── Tab navigation ─────────────────────────────────────────────────────── */
+.tab-nav {
+  display: flex; gap: 4px; margin-bottom: 20px;
+  border-bottom: 1px solid var(--line); padding-bottom: 0;
+}
+.tab-btn {
+  padding: 9px 18px; border: 0; background: none;
+  color: var(--muted); font-size: 13px; font-weight: 600;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  cursor: pointer; border-radius: 6px 6px 0 0; transition: color .12s;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--white); border-bottom-color: var(--white); }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
 
+/* ─── Pitch tab ──────────────────────────────────────────────────────────── */
+.pitch-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.pitch-col { display: flex; flex-direction: column; gap: 14px; }
 
+.drop-zone {
+  border: 2px dashed var(--line2); border-radius: 12px;
+  padding: 32px 20px; text-align: center; cursor: pointer;
+  transition: border-color .14s, background .14s;
+}
+.drop-zone:hover, .drop-zone.drag-over { border-color: var(--blue); background: #0d1929; }
+.drop-zone-icon { font-size: 32px; margin-bottom: 10px; color: var(--muted); }
+.drop-zone-label { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.drop-zone-sub { font-size: 11px; color: var(--muted); }
+
+.qual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.qual-item {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 10px 12px; border-radius: 8px; border: 1px solid var(--line);
+  background: #111; font-size: 12px;
+}
+.qual-item.pass { border-color: #065f46; background: #022c1a; }
+.qual-item.fail { border-color: #7f1d1d; background: #1e0a0a; }
+.qual-item.warn { border-color: #78350f; background: #1c1200; }
+.qual-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+.qual-dot.pass { background: var(--green); }
+.qual-dot.fail { background: var(--red); }
+.qual-dot.warn { background: var(--amber); }
+.qual-dot.neutral { background: var(--muted); }
+.qual-text { line-height: 1.4; color: var(--text); }
+.qual-text small { display: block; color: var(--muted); font-size: 10px; margin-top: 2px; }
+
+.verdict-bar {
+  padding: 14px 16px; border-radius: 10px; border: 1px solid;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.verdict-bar.qualified { border-color: #065f46; background: #022c1a; }
+.verdict-bar.dq { border-color: #7f1d1d; background: #1e0a0a; }
+.verdict-bar.review { border-color: #78350f; background: #1c1200; }
+.verdict-label { font-size: 13px; font-weight: 700; }
+.verdict-bar.qualified .verdict-label { color: var(--green); }
+.verdict-bar.dq .verdict-label { color: var(--red); }
+.verdict-bar.review .verdict-label { color: var(--amber); }
+.verdict-reason { font-size: 11px; color: var(--muted); }
+
+.msg-box {
+  background: #111; border: 1px solid var(--line2); border-radius: 10px; padding: 14px;
+}
+.msg-box-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.msg-box-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.msg-copy-btn {
+  font-size: 11px; padding: 4px 10px; border-radius: 6px;
+  border: 1px solid var(--line2); background: transparent; color: var(--muted);
+}
+.msg-copy-btn:hover { border-color: #555; color: var(--text); }
+.msg-text {
+  font-size: 12px; line-height: 1.6; color: var(--text); white-space: pre-wrap;
+  min-height: 80px;
+}
+.msg-char { font-size: 10px; color: var(--muted); margin-top: 6px; text-align: right; }
+
+.profile-parsed { background: #111; border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+.profile-parsed-name { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+.profile-parsed-role { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+.profile-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.profile-field { font-size: 11px; }
+.profile-field-label { color: var(--muted); }
+.profile-field-val { color: var(--text); font-weight: 600; }
+
+.enrich-row {
+  display: flex; gap: 8px; align-items: center; padding: 10px 12px;
+  border: 1px solid var(--line); border-radius: 8px; background: #111;
+}
+.enrich-name { font-size: 12px; font-weight: 600; flex: 1; }
+.enrich-email { font-size: 11px; color: var(--blue); flex: 1.5; }
+.enrich-status { font-size: 10px; padding: 2px 7px; border-radius: 999px; }
+.enrich-status.found { background: #022c1a; color: var(--green); border: 1px solid #065f46; }
+.enrich-status.notfound { background: #1e0a0a; color: var(--red); border: 1px solid #7f1d1d; }
+.enrich-status.pending { background: #1c1a00; color: var(--amber); border: 1px solid #92400e; }
+
+.pitch-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+
+/* Criteria panel */
+.criteria-panel { margin-bottom: 16px; }
+.criteria-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.criteria-card {
+  padding: 12px 14px; border-radius: 8px; border: 1px solid var(--line); background: #111;
+}
+.criteria-card.must { border-color: #065f46; }
+.criteria-card.nice { border-color: #78350f; }
+.criteria-card.dq-card { border-color: #7f1d1d; }
+.criteria-tag {
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 6px;
+}
+.criteria-tag.must { background: #022c1a; color: var(--green); }
+.criteria-tag.nice { background: #1c1200; color: var(--amber); }
+.criteria-tag.dq-card { background: #1e0a0a; color: var(--red); }
+.criteria-card h3 { font-size: 12px; font-weight: 700; margin-bottom: 3px; color: var(--white); }
+.criteria-card p { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+.spinner {
+  display: inline-block; width: 14px; height: 14px; border: 2px solid var(--line2);
+  border-top-color: var(--blue); border-radius: 50%;
+  animation: spin .7s linear infinite; vertical-align: middle; margin-right: 6px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 900px) {
+  .pitch-layout { grid-template-columns: 1fr; }
+  .qual-grid { grid-template-columns: 1fr; }
+  .criteria-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .criteria-grid { grid-template-columns: 1fr; }
+  .profile-fields { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -374,6 +507,19 @@ h2 { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -.0
       <input id="fileInput" type="file" accept=".csv,text/csv" hidden>
     </div>
   </header>
+
+  <!-- ─── Tab navigation ───────────────────────────────────────────────────── -->
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+    <button class="tab-btn" data-tab="pitch">Pitch assistant</button>
+    <button class="tab-btn" data-tab="enrich">Email enrichment</button>
+    <button class="tab-btn" data-tab="criteria">Qualification criteria</button>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       TAB: DASHBOARD
+  ════════════════════════════════════════════════════════════════════════ -->
+  <div class="tab-pane active" id="tab-dashboard">
 
   <!-- ─── Metrics ─────────────────────────────────────────────────────────── -->
   <section class="metrics" id="metrics" aria-label="Pipeline metrics"></section>
@@ -499,6 +645,140 @@ h2 { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -.0
     </div>
     <p class="table-footer">Click text cells to edit inline. Status and dates use dropdowns. All edits persist in localStorage.</p>
   </section>
+
+</main>
+
+  </div><!-- end tab-dashboard -->
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       TAB: PITCH ASSISTANT
+  ════════════════════════════════════════════════════════════════════════ -->
+  <div class="tab-pane" id="tab-pitch">
+  <div class="shell" style="padding-top:0">
+
+    <div class="pitch-layout">
+
+      <!-- Left col: drop zone + parsed profile + qualification -->
+      <div class="pitch-col">
+
+        <!-- Drop zone -->
+        <div class="panel">
+          <div class="section-head-left" style="margin-bottom:14px">
+            <div class="eyebrow">Step 1</div>
+            <h2>Drop a LinkedIn profile PDF</h2>
+          </div>
+          <div class="drop-zone" id="dropZone">
+            <div class="drop-zone-icon">&#128196;</div>
+            <div class="drop-zone-label">Drop PDF here or click to browse</div>
+            <div class="drop-zone-sub">Export any LinkedIn profile as PDF from your browser</div>
+          </div>
+          <input type="file" id="pdfInput" accept=".pdf,application/pdf" hidden>
+          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+            <input class="input" id="pitchUrlInput" placeholder="Or paste LinkedIn URL manually" style="flex:1;min-width:180px">
+            <button class="btn primary" id="pitchAnalyseBtn">Analyse</button>
+          </div>
+        </div>
+
+        <!-- Parsed profile card -->
+        <div class="panel" id="profileCard" style="display:none">
+          <div class="section-head-left" style="margin-bottom:12px">
+            <div class="eyebrow">Parsed profile</div>
+          </div>
+          <div id="profileContent"></div>
+          <div class="pitch-actions" style="margin-top:12px">
+            <button class="btn" id="saveLeadBtn">+ Save to leads</button>
+            <button class="btn danger" id="dqLeadBtn">Mark DQ</button>
+          </div>
+        </div>
+
+        <!-- Qualification result -->
+        <div id="qualPanel" style="display:none">
+          <div class="section-head-left" style="margin-bottom:10px">
+            <div class="eyebrow">Qualification</div>
+          </div>
+          <div id="verdictBar" style="margin-bottom:10px"></div>
+          <div class="qual-grid" id="qualGrid"></div>
+        </div>
+
+      </div>
+
+      <!-- Right col: generated messages -->
+      <div class="pitch-col">
+
+        <div class="panel">
+          <div class="section-head-left" style="margin-bottom:14px">
+            <div class="eyebrow">Step 2</div>
+            <h2>Generated outreach</h2>
+          </div>
+          <div id="messagesWrap">
+            <div style="color:var(--muted);font-size:12px;padding:20px 0">
+              Drop a profile PDF and click Analyse to generate personalised messages.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  </div><!-- end tab-pitch -->
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       TAB: EMAIL ENRICHMENT
+  ════════════════════════════════════════════════════════════════════════ -->
+  <div class="tab-pane" id="tab-enrich">
+  <div class="shell" style="padding-top:0">
+
+    <div class="panel" style="margin-bottom:14px">
+      <div class="section-head">
+        <div class="section-head-left">
+          <div class="eyebrow">Apollo.io enrichment</div>
+          <h2>Email addresses for all leads</h2>
+          <p class="subhead" style="margin-top:4px">Enriches leads using the Apollo MCP connection. Emails are saved to each lead record.</p>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <button class="btn primary" id="enrichAllBtn">Enrich all leads</button>
+          <button class="btn" id="enrichMissingBtn">Enrich missing only</button>
+        </div>
+      </div>
+      <div id="enrichStatus" style="font-size:12px;color:var(--muted);margin-bottom:12px"></div>
+      <div id="enrichList"></div>
+    </div>
+
+  </div>
+  </div><!-- end tab-enrich -->
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       TAB: QUALIFICATION CRITERIA
+  ════════════════════════════════════════════════════════════════════════ -->
+  <div class="tab-pane" id="tab-criteria">
+  <div class="shell" style="padding-top:0">
+
+    <div class="panel criteria-panel">
+      <div class="section-head-left" style="margin-bottom:16px">
+        <div class="eyebrow">Whizzlead Media</div>
+        <h2>Lead qualification criteria</h2>
+        <p class="subhead" style="margin-top:4px">A lead must meet all MUST criteria. Missing any is an automatic DQ. NICE criteria improve fit score.</p>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <div class="eyebrow" style="margin-bottom:8px">Must have (automatic DQ if missing)</div>
+        <div class="criteria-grid" id="mustCriteria"></div>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <div class="eyebrow" style="margin-bottom:8px">Nice to have (raises fit score)</div>
+        <div class="criteria-grid" id="niceCriteria"></div>
+      </div>
+
+      <div>
+        <div class="eyebrow" style="margin-bottom:8px">Automatic disqualifiers</div>
+        <div class="criteria-grid" id="dqCriteria"></div>
+      </div>
+    </div>
+
+  </div>
+  </div><!-- end tab-criteria -->
 
 </main>
 
@@ -1593,7 +1873,430 @@ render();
 
 
 
-})();
-</script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   TAB SYSTEM
+   ═══════════════════════════════════════════════════════════════════════════ */
+document.querySelectorAll(".tab-btn").forEach(function (btn) {
+  btn.onclick = function () {
+    document.querySelectorAll(".tab-btn").forEach(function (b) { b.classList.remove("active"); });
+    document.querySelectorAll(".tab-pane").forEach(function (p) { p.classList.remove("active"); });
+    btn.classList.add("active");
+    var pane = document.getElementById("tab-" + btn.getAttribute("data-tab"));
+    if (pane) pane.classList.add("active");
+  };
+});
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   QUALIFICATION CRITERIA
+   Single source of truth used by both the criteria tab and the pitch analyser.
+   ═══════════════════════════════════════════════════════════════════════════ */
+var QUAL_MUST = [
+  { id:"founder",   title:"Founder / senior leader",        desc:"CEO, Co-founder, CMO, CRO, MD, Director or VP. Must have authority over brand and content spend." },
+  { id:"company",   title:"Active company",                  desc:"Company has a real online presence (website, LinkedIn page). Not a ghost or dormant entity." },
+  { id:"b2b",       title:"B2B or professional audience",    desc:"Sells to businesses or professionals. Consumer brands are not a fit for LinkedIn-first content." },
+  { id:"size",      title:"Funded or revenue-generating",    desc:"Series A+ startup, bootstrapped business with revenue, or established SME. Not pre-revenue solo." },
+  { id:"visible",   title:"Needs content / visibility",      desc:"Has a content gap, inconsistent posting, or expressed the need to build thought leadership." }
+];
+var QUAL_NICE = [
+  { id:"saas",      title:"B2B SaaS or tech",                desc:"Ideal vertical. Strong match for LinkedIn authority content and YouTube product explainers." },
+  { id:"india",     title:"India / SEA based",               desc:"Bengaluru, Chennai, Mumbai, Delhi, Singapore. In-person shoot is easier and cheaper." },
+  { id:"podcast",   title:"Already has a podcast or show",   desc:"Easier to convert existing content habit into a full video system." },
+  { id:"active",    title:"Active LinkedIn presence",        desc:"Posts occasionally. Has an engaged network. Understands platform distribution." },
+  { id:"team",      title:"Has a marketing / content team",  desc:"Internal champion who can coordinate shoot days and approvals." }
+];
+var QUAL_DQ = [
+  { id:"agency",    title:"Content / video agency",          desc:"Direct competitor. We do not serve other agencies producing the same deliverables." },
+  { id:"overlap",   title:"Social selling / outbound tool",  desc:"Overlap in messaging and distribution angle. Not our buyer." },
+  { id:"solo",      title:"Pre-revenue solo founder",        desc:"Cannot commit to a retainer. Move to watch list and revisit at Series A or first revenue." },
+  { id:"consumer",  title:"Consumer brand (B2C)",            desc:"LinkedIn-first content system does not fit a B2C buyer journey." },
+  { id:"fractional",title:"Fractional CMO / consultant",     desc:"Will position content for clients, not their own brand. Poor retainer fit." }
+];
+
+function renderCriteria() {
+  function card(item, type) {
+    return '<div class="criteria-card ' + type + '">' +
+      '<span class="criteria-tag ' + type + '">' + (type === "must" ? "Must" : type === "nice" ? "Nice" : "Auto DQ") + '</span>' +
+      '<h3>' + esc(item.title) + '</h3>' +
+      '<p>' + esc(item.desc) + '</p></div>';
+  }
+  var mc = document.getElementById("mustCriteria");
+  var nc = document.getElementById("niceCriteria");
+  var dc = document.getElementById("dqCriteria");
+  if (mc) mc.innerHTML = QUAL_MUST.map(function(i){ return card(i,"must"); }).join("");
+  if (nc) nc.innerHTML = QUAL_NICE.map(function(i){ return card(i,"nice"); }).join("");
+  if (dc) dc.innerHTML = QUAL_DQ.map(function(i){ return card(i,"dq-card"); }).join("");
+}
+renderCriteria();
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PITCH ASSISTANT
+   Uses Claude API (claude-sonnet-4-6) to:
+   1. Parse a LinkedIn PDF or URL into structured profile data
+   2. Score the lead against qualification criteria
+   3. Generate a connection request and LinkedIn DM personalised to the lead
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+var pitchState = { profile: null, verdict: null, messages: null };
+
+/* ── Drop zone wiring ──────────────────────────────────────────────────── */
+var dropZone = document.getElementById("dropZone");
+var pdfInput = document.getElementById("pdfInput");
+
+dropZone.onclick = function () { pdfInput.click(); };
+dropZone.ondragover = function (e) { e.preventDefault(); dropZone.classList.add("drag-over"); };
+dropZone.ondragleave = function () { dropZone.classList.remove("drag-over"); };
+dropZone.ondrop = function (e) {
+  e.preventDefault(); dropZone.classList.remove("drag-over");
+  var f = e.dataTransfer.files[0];
+  if (f && f.type === "application/pdf") processPdf(f);
+  else toast("Please drop a PDF file", true);
+};
+pdfInput.onchange = function (e) {
+  var f = e.target.files[0];
+  if (f) processPdf(f);
+  e.target.value = "";
+};
+document.getElementById("pitchAnalyseBtn").onclick = function () {
+  var url = document.getElementById("pitchUrlInput").value.trim();
+  if (!url) { toast("Paste a LinkedIn URL or drop a PDF", true); return; }
+  analysePitch({ url: url });
+};
+
+/* ── Convert PDF to base64 then analyse ───────────────────────────────── */
+function processPdf(file) {
+  setMessagesWrap('<span class="spinner"></span> Reading PDF...');
+  var reader = new FileReader();
+  reader.onload = function (e) {
+    var b64 = e.target.result.split(",")[1];
+    analysePitch({ pdf: b64, fileName: file.name });
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ── Pitch analysis via Claude API ───────────────────────────────────────
+   System prompt encodes everything Claude needs to know about Whizzlead
+   Media and the qualification criteria in one shot.
+   ─────────────────────────────────────────────────────────────────────── */
+var PITCH_SYSTEM = [
+  "You are the outreach engine for Whizzlead Media (whizzleadmedia.com), a Bengaluru-based always-on video production and content system for B2B founders and senior leaders.",
+  "",
+  "Whizzlead Media offer:",
+  "- Monthly retainer (INR 2,00,000/mo + GST): strategy, 2 production days, long-form + short-form editing, all platform versions (LinkedIn / YouTube / Instagram), raw files, backup.",
+  "- Channels: LinkedIn thought leadership, YouTube long-form, Instagram Reels/Shorts.",
+  "- The pitch is: 'One appearance gets seen. Consistency gets remembered. You need a video machine, not a one-off shoot.'",
+  "- Key hooks: founders who post inconsistently, companies with no video presence, post-Series A startups building category authority.",
+  "",
+  "Qualification criteria:",
+  "MUST: Founder/senior leader (CEO, Co-founder, CMO, CRO, MD, VP), active company with real presence, B2B or professional audience, funded or revenue-generating, visible content gap.",
+  "NICE: B2B SaaS or tech, India/SEA based, has podcast or existing content habit, active LinkedIn poster, has marketing/content team.",
+  "AUTO DQ: Content/video agency (competitor), social selling / outbound tool overlap, pre-revenue solo founder, B2C consumer brand, fractional CMO/consultant.",
+  "",
+  "Your task: given a LinkedIn profile (PDF text or URL), return ONLY valid JSON (no markdown, no preamble) in this exact structure:",
+  "{",
+  "  \"name\": string,",
+  "  \"role\": string,",
+  "  \"company\": string,",
+  "  \"location\": string,",
+  "  \"industry\": string,",
+  "  \"about\": string (1-2 sentences from their bio),",
+  "  \"content_signals\": string (what you observed about their content habits / online presence),",
+  "  \"hook\": string (the single most relevant pain or opportunity for Whizzlead, 1 sentence),",
+  "  \"qualification\": {",
+  "    \"must\": { \"founder\": true/false, \"company\": true/false, \"b2b\": true/false, \"size\": true/false, \"visible\": true/false },",
+  "    \"nice\": { \"saas\": true/false, \"india\": true/false, \"podcast\": true/false, \"active\": true/false, \"team\": true/false },",
+  "    \"dq\": { \"agency\": true/false, \"overlap\": true/false, \"solo\": true/false, \"consumer\": true/false, \"fractional\": true/false }",
+  "  },",
+  "  \"verdict\": \"qualified\" | \"dq\" | \"review\",",
+  "  \"verdict_reason\": string (1 sentence),",
+  "  \"connection_request\": string (max 300 characters, no hashtags, personalised, sounds human, references something specific from their profile, ends with a soft CTA - no selling yet),",
+  "  \"linkedin_dm\": string (max 500 characters, sent after connecting, references their content gap or growth signal, positions Whizzlead Media as the solution, includes a soft CTA to a 30-min call at calendly.com/vinay-whizzleadmedia/30min)",
+  "}"
+].join("\n");
+
+function analysePitch(input) {
+  setMessagesWrap('<span class="spinner"></span> Analysing profile with Claude...');
+  document.getElementById("profileCard").style.display = "none";
+  document.getElementById("qualPanel").style.display = "none";
+
+  var messages;
+  if (input.pdf) {
+    messages = [{
+      role: "user",
+      content: [
+        { type: "document", source: { type: "base64", media_type: "application/pdf", data: input.pdf } },
+        { type: "text", text: "Analyse this LinkedIn profile PDF and return the JSON." }
+      ]
+    }];
+  } else {
+    messages = [{
+      role: "user",
+      content: "LinkedIn profile URL: " + input.url + "\n\nAnalyse this person's LinkedIn presence (use what you know or can infer from the URL) and return the JSON."
+    }];
+  }
+
+  fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: "claude-sonnet-4-6",
+      max_tokens: 1500,
+      system: PITCH_SYSTEM,
+      messages: messages
+    })
+  })
+  .then(function (r) { return r.json(); })
+  .then(function (data) {
+    var raw = (data.content || []).filter(function(b){ return b.type === "text"; }).map(function(b){ return b.text; }).join("");
+    /* Strip any accidental markdown fences */
+    raw = raw.replace(/```json|```/g, "").trim();
+    var profile;
+    try { profile = JSON.parse(raw); }
+    catch(e) { toast("Could not parse Claude response - try again", true); setMessagesWrap(""); return; }
+
+    pitchState.profile = profile;
+    renderParsedProfile(profile);
+    renderQualification(profile);
+    renderMessages(profile);
+  })
+  .catch(function (e) {
+    toast("API error: " + e.message, true);
+    setMessagesWrap("Error. Check console.");
+  });
+}
+
+function renderParsedProfile(p) {
+  var card = document.getElementById("profileCard");
+  var content = document.getElementById("profileContent");
+  content.innerHTML =
+    '<div class="profile-parsed-name">' + esc(p.name || "Unknown") + '</div>' +
+    '<div class="profile-parsed-role">' + esc(p.role || "") + ' at ' + esc(p.company || "") + '</div>' +
+    '<div class="profile-fields">' +
+      field("Location", p.location) +
+      field("Industry", p.industry) +
+      field("About", p.about) +
+      field("Content signals", p.content_signals) +
+      field("Pitch hook", p.hook) +
+    '</div>';
+  card.style.display = "block";
+}
+
+function field(label, val) {
+  if (!val) return "";
+  return '<div class="profile-field"><div class="profile-field-label">' + esc(label) + '</div>' +
+    '<div class="profile-field-val" style="white-space:normal;line-height:1.4">' + esc(val) + '</div></div>';
+}
+
+function renderQualification(p) {
+  var panel = document.getElementById("qualPanel");
+  var q = p.qualification || {};
+  var must = q.must || {};
+  var nice = q.nice || {};
+  var dq = q.dq || {};
+
+  /* Verdict bar */
+  var vClass = p.verdict === "qualified" ? "qualified" : p.verdict === "dq" ? "dq" : "review";
+  var vLabel = p.verdict === "qualified" ? "Qualified" : p.verdict === "dq" ? "Disqualified" : "Needs review";
+  document.getElementById("verdictBar").innerHTML =
+    '<div class="verdict-bar ' + vClass + '">' +
+    '<span class="verdict-label">' + esc(vLabel) + '</span>' +
+    '<span class="verdict-reason">' + esc(p.verdict_reason || "") + '</span></div>';
+
+  /* Qual grid: MUST */
+  var grid = document.getElementById("qualGrid");
+  var rows = QUAL_MUST.map(function(c) {
+    var pass = must[c.id];
+    var cls = pass ? "pass" : "fail";
+    return qualRow(c.title, c.desc, cls);
+  });
+  rows = rows.concat(QUAL_NICE.map(function(c) {
+    var pass = nice[c.id];
+    var cls = pass ? "pass" : "warn";
+    return qualRow(c.title + " (nice)", c.desc, cls);
+  }));
+  /* Any DQ flags */
+  QUAL_DQ.forEach(function(c) {
+    if (dq[c.id]) rows.push(qualRow("DQ: " + c.title, c.desc, "fail"));
+  });
+  grid.innerHTML = rows.join("");
+  panel.style.display = "block";
+}
+
+function qualRow(title, desc, cls) {
+  return '<div class="qual-item ' + cls + '">' +
+    '<span class="qual-dot ' + cls + '"></span>' +
+    '<div class="qual-text"><strong>' + esc(title) + '</strong><small>' + esc(desc) + '</small></div></div>';
+}
+
+function renderMessages(p) {
+  var conn = p.connection_request || "";
+  var dm   = p.linkedin_dm || "";
+
+  var html =
+    msgBox("Connection request", conn, "connMsg") +
+    '<div style="height:12px"></div>' +
+    msgBox("LinkedIn DM (after connecting)", dm, "dmMsg");
+
+  setMessagesWrap(html);
+
+  /* Copy buttons */
+  document.getElementById("copyConn").onclick = function () {
+    navigator.clipboard.writeText(conn).then(function(){ toast("Copied connection request"); });
+  };
+  document.getElementById("copyDm").onclick = function () {
+    navigator.clipboard.writeText(dm).then(function(){ toast("Copied DM"); });
+  };
+}
+
+function msgBox(title, text, id) {
+  return '<div class="msg-box">' +
+    '<div class="msg-box-head">' +
+      '<span class="msg-box-title">' + esc(title) + '</span>' +
+      '<button class="msg-copy-btn" id="copy' + id.replace("Msg","") + '" type="button">Copy</button>' +
+    '</div>' +
+    '<div class="msg-text">' + esc(text) + '</div>' +
+    '<div class="msg-char">' + text.length + ' characters</div>' +
+  '</div>';
+}
+
+function setMessagesWrap(html) {
+  document.getElementById("messagesWrap").innerHTML = html;
+}
+
+/* Save to leads */
+document.getElementById("saveLeadBtn").onclick = function () {
+  var p = pitchState.profile;
+  if (!p) return;
+  var lead = {
+    name        : p.name || "",
+    company     : p.company || "",
+    role        : p.role || "",
+    url         : document.getElementById("pitchUrlInput").value.trim() || "",
+    date        : today(),
+    status      : "Researching",
+    message_type: "Connection request",
+    notes       : p.hook || "",
+    next_action : "",
+    followup_date: ""
+  };
+  state.leads = dedupe(state.leads.concat([lead]));
+  save(); render();
+  toast("Lead saved: " + lead.name);
+};
+
+/* Mark DQ */
+document.getElementById("dqLeadBtn").onclick = function () {
+  var p = pitchState.profile;
+  if (!p) return;
+  var lead = {
+    name        : p.name || "",
+    company     : p.company || "",
+    role        : p.role || "",
+    url         : document.getElementById("pitchUrlInput").value.trim() || "",
+    date        : today(),
+    status      : "DQ",
+    message_type: "",
+    notes       : (p.verdict_reason || "DQ from pitch assistant"),
+    next_action : "",
+    followup_date: ""
+  };
+  state.leads = dedupe(state.leads.concat([lead]));
+  save(); render();
+  toast("Lead DQ'd: " + lead.name);
+};
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   EMAIL ENRICHMENT via Apollo MCP
+   Calls Claude with Apollo MCP enabled to look up emails for leads.
+   Results are saved back into localStorage.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+function renderEnrichList(leads) {
+  var wrap = document.getElementById("enrichList");
+  if (!leads.length) {
+    wrap.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:12px 0">No leads to enrich yet. Import leads first.</div>';
+    return;
+  }
+  wrap.innerHTML = leads.map(function (x) {
+    var hasEmail = !!x.email;
+    return '<div class="enrich-row" id="enrich-' + attr(x.id) + '">' +
+      '<div class="enrich-name">' + esc(x.name) + '<div style="font-size:10px;color:var(--muted)">' + esc(x.company || "") + '</div></div>' +
+      '<div class="enrich-email">' + esc(x.email || "") + '</div>' +
+      '<span class="enrich-status ' + (hasEmail ? "found" : "notfound") + '">' + (hasEmail ? "Found" : "No email") + '</span>' +
+      '</div>';
+  }).join("");
+}
+
+function enrichLead(lead, onDone) {
+  var row = document.getElementById("enrich-" + lead.id);
+  if (row) row.querySelector(".enrich-status").innerHTML = '<span class="spinner"></span>';
+
+  var prompt = "Use Apollo to find the email address for: " +
+    lead.name + " at " + (lead.company || "unknown company") +
+    (lead.url ? " (LinkedIn: " + lead.url + ")" : "") +
+    ". Return ONLY valid JSON: {\"email\": \"found@email.com\"} or {\"email\": \"\"} if not found. No other text.";
+
+  fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: "claude-sonnet-4-6",
+      max_tokens: 200,
+      messages: [{ role: "user", content: prompt }],
+      mcp_servers: [{ type: "url", url: "https://mcp.apollo.io/mcp", name: "apollo-mcp" }]
+    })
+  })
+  .then(function (r) { return r.json(); })
+  .then(function (data) {
+    var raw = (data.content || []).filter(function(b){ return b.type==="text"; }).map(function(b){ return b.text; }).join("").replace(/```json|```/g,"").trim();
+    try {
+      var result = JSON.parse(raw);
+      if (result.email) {
+        lead.email = result.email;
+        save();
+      }
+    } catch(e) { /* silently continue */ }
+    if (onDone) onDone();
+  })
+  .catch(function () { if (onDone) onDone(); });
+}
+
+function runEnrichment(leads) {
+  var total = leads.length;
+  var done = 0;
+  var status = document.getElementById("enrichStatus");
+
+  if (!total) { status.textContent = "No leads to enrich."; return; }
+
+  document.getElementById("enrichAllBtn").disabled = true;
+  document.getElementById("enrichMissingBtn").disabled = true;
+
+  function next() {
+    if (done >= total) {
+      status.textContent = "Done. Enriched " + total + " leads.";
+      document.getElementById("enrichAllBtn").disabled = false;
+      document.getElementById("enrichMissingBtn").disabled = false;
+      renderEnrichList(state.leads);
+      return;
+    }
+    status.textContent = "Enriching " + (done + 1) + " of " + total + "...";
+    enrichLead(leads[done], function () { done++; next(); });
+  }
+  next();
+}
+
+document.getElementById("enrichAllBtn").onclick = function () {
+  renderEnrichList(state.leads);
+  runEnrichment(state.leads);
+};
+document.getElementById("enrichMissingBtn").onclick = function () {
+  var missing = state.leads.filter(function (x) { return !x.email; });
+  renderEnrichList(state.leads);
+  runEnrichment(missing);
+};
+
+/* Initial render of enrich list */
+renderEnrichList(state.leads);
+
+
 </body>
 </html>
