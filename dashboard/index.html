@@ -226,8 +226,7 @@ h2 { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -.0
 .pill-DQ                  { background: #1a1a1a; color: #666; border-color: #333; }
 .pill-Converted           { background: #00241a; color: #4ade80; border-color: #166534; }
 .pill-Meeting-happened    { background: #001a2e; color: #38bdf8; border-color: #075985; }
-.pill-Founding-offer      { background: #1a0a2e; color: #c084fc; border-color: #6b21a8; }
-.pill-Pilot               { background: #0a1a2e; color: #60a5fa; border-color: #1d4ed8; }
+.pill-Offer--Pilot        { background: #1a0a2e; color: #c084fc; border-color: #6b21a8; }
 .pill-Retainer            { background: #0a2a1a; color: #86efac; border-color: #15803d; }
 
 /* ─── Priority table ─────────────────────────────────────────────────────── */
@@ -870,8 +869,7 @@ var STATUSES = [
   "Not interested",
   "DQ",
   "Converted",
-  "Founding offer",
-  "Pilot",
+  "Offer / Pilot",
   "Retainer"
 ];
 
@@ -882,7 +880,7 @@ var STATUSES = [
 var REACHED_STATUSES = [
   "Contacted","Interested","Follow-up","Meeting booked","Meeting happened",
   "Not interested","DQ","Converted","Connected",
-  "Founding offer","Pilot","Retainer"
+  "Offer / Pilot","Retainer"
 ];
 
 /*
@@ -893,7 +891,7 @@ var PENDING_STATUSES = ["Researching","Connection request sent"];
 /*
  * Priority queue statuses (shown in the priority table).
  */
-var PRIORITY_STATUSES = ["Interested","Follow-up","Meeting booked","Meeting happened","Founding offer","Pilot","Retainer"];
+var PRIORITY_STATUSES = ["Interested","Follow-up","Meeting booked","Meeting happened","Offer / Pilot","Retainer"];
 
 /*
  * Legacy status → canonical status mapping (migration).
@@ -913,7 +911,9 @@ var STATUS_MAP = {
   "Ready to contact"       : "Researching",
   "Meeting Done"           : "Meeting happened",
   "Meeting Happened"       : "Meeting happened",
-  "Founding Offer"         : "Founding offer"
+  "Founding Offer"         : "Offer / Pilot",
+  "Founding offer"         : "Offer / Pilot",
+  "Pilot"                  : "Offer / Pilot"
 };
 
 /* ─── State ─────────────────────────────────────────────────────────────── */
@@ -1265,8 +1265,6 @@ var metricBtn = function (label, value, meta, type, filterValue, klass) {
 
 var renderMetrics = function () {
   var total   = state.leads.length;
-  var todayN  = countOnDate(today());
-  var pending = Math.max(0, state.settings.dailyTarget - todayN);
 
   var count = function (statuses) {
     return state.leads.filter(function (x) { return statuses.indexOf(x.status) >= 0; }).length;
@@ -1279,29 +1277,23 @@ var renderMetrics = function () {
   var notInt        = count(["Not interested"]);
   var dq            = count(["DQ"]);
   var converted     = count(["Converted"]);
-  var foundingOffer = count(["Founding offer"]);
-  var pilot         = count(["Pilot"]);
+  var offerPilot    = count(["Offer / Pilot"]);
   var retainer      = count(["Retainer"]);
 
   /* Positive responses = interested + all meeting stages + offer/pilot/retainer */
-  var posResponses  = count(["Interested","Meeting booked","Meeting happened","Founding offer","Pilot","Retainer","Converted"]);
+  var posResponses  = count(["Interested","Meeting booked","Meeting happened","Offer / Pilot","Retainer","Converted"]);
 
   var pct = function (n, d) {
     return d ? Math.round(n / d * 100) + "%" : "0%";
   };
 
-  /* Row 1: Daily target | Reached today | Pending today */
-  /* Row 2: Total leads  | Positive responses | Not interested */
-  /* Row 3: Interested   | Meeting booked | Meeting happened */
-  /* Row 4: Follow-up    | DQ | Converted */
-  /* Row 5: Founding offer | Pilot | Retainer */
+  /* Row 1: Total leads  | Positive responses | Not interested */
+  /* Row 2: Interested   | Meeting booked     | Meeting happened */
+  /* Row 3: Follow-up    | DQ                 | Converted */
+  /* Row 4: Offer / Pilot | Retainer          |  */
   $("metrics").innerHTML =
-    metricBtn("Daily target",      state.settings.dailyTarget, "per active day",                                          "all",    "",                "") +
-    metricBtn("Reached today",     todayN,   todayN + " / " + state.settings.dailyTarget + " (" + pct(todayN, state.settings.dailyTarget) + ")", "today", "", "good") +
-    metricBtn("Pending today",     pending,  pct(pending, state.settings.dailyTarget) + " of today",                     "pending","",                "warn") +
-
     metricBtn("Total leads",       total,        "100% of records",                                                       "all",    "",                "") +
-    metricBtn("Positive responses",posResponses,  pct(posResponses, total || 1) + " of leads",                           "status", "Interested",      "good") +
+    metricBtn("Positive responses",posResponses,  pct(posResponses, total || 1) + " response rate",                      "status", "Interested",      "good") +
     metricBtn("Not interested",    notInt,        pct(notInt,        total || 1) + " of leads",                           "status", "Not interested",  "danger") +
 
     metricBtn("Interested",        interested,    pct(interested,    total || 1) + " of leads",                           "status", "Interested",      "good") +
@@ -1312,8 +1304,7 @@ var renderMetrics = function () {
     metricBtn("DQ",                dq,            pct(dq,            total || 1) + " of leads",                           "status", "DQ",              "") +
     metricBtn("Converted",         converted,     pct(converted,     total || 1) + " of leads",                           "status", "Converted",       "good") +
 
-    metricBtn("Founding offer",    foundingOffer, pct(foundingOffer, total || 1) + " of leads",                           "status", "Founding offer",  "good") +
-    metricBtn("Pilot",             pilot,         pct(pilot,         total || 1) + " of leads",                           "status", "Pilot",           "good") +
+    metricBtn("Offer / Pilot",     offerPilot,    pct(offerPilot,    total || 1) + " of leads",                           "status", "Offer / Pilot",   "good") +
     metricBtn("Retainer",          retainer,      pct(retainer,      total || 1) + " of leads",                           "status", "Retainer",        "good");
 };
 
@@ -1864,6 +1855,95 @@ var setup = function () {
   /* CSV export */
   $("exportBtn").onclick = exportCsv;
 };
+
+/* ─── Seed: BLR + CHN clinic prospects (injected once if localStorage empty) */
+(function seedClinicProspects() {
+  var KEY_CHECK = "whizzlead_leads";
+  try { if (localStorage.getItem(KEY_CHECK)) return; } catch(e) { return; }
+  var SEED = [
+    /* ── BLR Physiotherapy ───────────────────────────────────────────────── */
+    {id:"blr-p1",name:"Dr. Dhanajeyan Jayavel",company:"Spectrum Physio",role:"Founder",url:"https://linkedin.com/in/dr-dhanajeyan-jayavel",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Physio | ACTIVE – patient-edu & motivation Shorts. 19K subs.",next_action:"",followup_date:"",email:""},
+    {id:"blr-p2",name:"Dr. Ayyappan V Nair",company:"BSI Physio",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Physio | LOW – single long-form video, no LinkedIn found.",next_action:"",followup_date:"",email:""},
+    {id:"blr-p3",name:"Dr. Aamir Kaleem",company:"Quantum Physio",role:"Founder",url:"https://linkedin.com/in/aamir-kaleem-7ab5b364",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Physio | LOW – 3 videos, last upload 2022.",next_action:"",followup_date:"",email:""},
+    {id:"blr-p4",name:"Dr. Ponkhi Sharma",company:"Curis 360",role:"Founder",url:"https://linkedin.com/in/dr-ponkhi-sharma-51277370",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Physio | HEAVY – 5K subs, uploads 3-4/month, founder on camera.",next_action:"",followup_date:"",email:""},
+    {id:"blr-p5",name:"Dr. Pratik Desai",company:"Zelus",role:"Founder",url:"https://linkedin.com/in/pratik-desai-143b5a104",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Physio | ACTIVE – 57K subs, condition-specific Shorts, weekly.",next_action:"",followup_date:"",email:""},
+    /* ── BLR Dermatology ─────────────────────────────────────────────────── */
+    {id:"blr-d1",name:"Dr. Chytra V Anand",company:"Kosmoderma",role:"Founder",url:"https://linkedin.com/in/drchytra",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Derm | HEAVY – 1M+ subs, daily uploads, 17 clinics.",next_action:"",followup_date:"",email:""},
+    {id:"blr-d2",name:"Dr. Rasya Dixit",company:"Dr. Dixit Cosmetic Dermatology",role:"Founder",url:"https://linkedin.com/in/rasya-dixit-5b624698",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Derm | HEAVY – 1.2M subs, daily Shorts, strong personal brand.",next_action:"",followup_date:"",email:""},
+    {id:"blr-d3",name:"Dr. Rajdeep Mysore",company:"Charma Clinic",role:"Founder",url:"https://linkedin.com/in/rajdeep-mysore-162865a5",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Derm | ACTIVE – 58K subs, weekly procedure explainers.",next_action:"",followup_date:"",email:""},
+    {id:"blr-d4",name:"Dr. Priyanka Reddy",company:"DNA Skin Clinic",role:"Founder",url:"https://linkedin.com/in/dr-priyanka-reddy-aaa039256",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Derm | ACTIVE – 68K subs, multi-language Shorts.",next_action:"",followup_date:"",email:""},
+    {id:"blr-d5",name:"Dr. Suganya Naidu",company:"Skinmatics",role:"Founder",url:"https://linkedin.com/in/dr-suganya-naidu-9bb9493b8",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Derm | LOW – 2 YT videos, primarily Insta-driven.",next_action:"",followup_date:"",email:""},
+    /* ── BLR Dental ──────────────────────────────────────────────────────── */
+    {id:"blr-dn1",name:"Dr. Sumanth M. Shetty",company:"Chisel Dental",role:"Founder",url:"https://linkedin.com/in/best-dental-implants-surgeon-bangalore",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Dental | ACTIVE – 5K subs, educational Shorts.",next_action:"",followup_date:"",email:""},
+    {id:"blr-dn2",name:"Dr. Naveenn Indla",company:"32 Smiles",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Dental | ACTIVE – 7K subs, patient testimonials & Shorts. Company LI only.",next_action:"",followup_date:"",email:""},
+    {id:"blr-dn3",name:"Dr. Balasubramanya K V",company:"Dental Solutions Bangalore",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Dental | LOW – 11 videos, last 3 years ago. No LinkedIn.",next_action:"",followup_date:"",email:""},
+    {id:"blr-dn4",name:"Dr. Sujatha Pai",company:"Powersmiles Dental Studio",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Dental | LOW – 6 videos, last 9 months ago. No LinkedIn.",next_action:"",followup_date:"",email:""},
+    {id:"blr-dn5",name:"Dr. K. N. Trivikram Rao",company:"All Smiles Dental Clinic",role:"Founder",url:"https://linkedin.com/in/dr-trivikram-vikram-rao-13493a15",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Dental | ACTIVE – 14K subs, procedure walkthroughs, monthly.",next_action:"",followup_date:"",email:""},
+    /* ── BLR Hair Transplant ─────────────────────────────────────────────── */
+    {id:"blr-h1",name:"Dr. Venkataram Mysore",company:"Venkat Center for Skin & Plastic Surgery",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Hair | HEAVY – 76K subs, Tamil/Kannada explainers, weekly. Company LI only.",next_action:"",followup_date:"",email:""},
+    {id:"blr-h2",name:"Dr. Abhishek Pilani",company:"Assure Clinic",role:"Founder",url:"https://linkedin.com/in/dr-abhishek-pilani",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Hair | ACTIVE – 32K subs, Shorts-heavy, bi-weekly.",next_action:"",followup_date:"",email:""},
+    {id:"blr-h3",name:"Dr. Sandeep Mahapatra",company:"Neo Follicle Clinic",role:"Founder",url:"https://linkedin.com/in/dr-sandeep-mahapatra-315411112",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Hair | LOW – 1.4K subs, 9 videos. Primarily Instagram-driven.",next_action:"",followup_date:"",email:""},
+    {id:"blr-h4",name:"Dr. Parthasarathi Dutta Roy",company:"Asian Hair & Skin Hospital",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Hair | ACTIVE – 28K subs, before/after results, weekly. No LinkedIn.",next_action:"",followup_date:"",email:""},
+    {id:"blr-h5",name:"Dr. Deepak Devakar",company:"Dermasculpt Clinic",role:"Founder",url:"https://linkedin.com/in/dr-deepak-devakar",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Hair | ACTIVE – 13K subs, FUE education, bi-weekly.",next_action:"",followup_date:"",email:""},
+    /* ── BLR Aesthetic ───────────────────────────────────────────────────── */
+    {id:"blr-a1",name:"Dr. Praharsh Devraj",company:"Clinic Next Face",role:"Founder",url:"https://linkedin.com/in/dr-praharsh-devraj",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Aesthetic | HEAVY – 1.5M subs, daily Shorts, rhinoplasty & fat-loss focus.",next_action:"",followup_date:"",email:""},
+    {id:"blr-a2",name:"Dr. Harish B",company:"Livglam",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Aesthetic | LOW – 2.4K subs, 47 videos, last ~6 months ago. No LinkedIn.",next_action:"",followup_date:"",email:""},
+    {id:"blr-a3",name:"Dr. Nancy & Dr. Alankar",company:"Aesthetic Edge",role:"Founders",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Aesthetic | ACTIVE – 14K subs, patient outcomes & reels, monthly. Company LI only.",next_action:"",followup_date:"",email:""},
+    {id:"blr-a4",name:"Dr. Prem Anand",company:"Anew Cosmetic Clinic",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Aesthetic | LOW – 1.5K subs, 18 videos, no recent uploads. No LinkedIn.",next_action:"",followup_date:"",email:""},
+    {id:"blr-a5",name:"Dr. Sahebgowda Shetty",company:"Dr. Shetty's Cosmetic & Laser Centre",role:"Founder",url:"https://linkedin.com/in/dr-sahebgowda-shetty-6b802829",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Aesthetic | ACTIVE – 13K subs, procedure demos, bi-weekly.",next_action:"",followup_date:"",email:""},
+    /* ── BLR Fertility / IVF ─────────────────────────────────────────────── */
+    {id:"blr-f1",name:"Dr. Asha S. Vijay",company:"GarbhaGudi IVF Centre",role:"Founder",url:"https://linkedin.com/in/asha-vijay-bab4063b",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Fertility | HEAVY – 231K subs, IVF journeys & patient stories, daily.",next_action:"",followup_date:"",email:"ashasvijay@garbhagudi.com"},
+    {id:"blr-f2",name:"Dr. Kamini Rao",company:"Dr. Kamini Rao Hospitals",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Fertility | ACTIVE – 22K subs, patient education & Q&As. Company LI only.",next_action:"",followup_date:"",email:""},
+    {id:"blr-f3",name:"Dr. Ramakrishna",company:"Momsoon Fertility",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Fertility | LOW – 248 subs, 5 videos. No LinkedIn.",next_action:"",followup_date:"",email:""},
+    {id:"blr-f4",name:"Dr. Rashmi Yogish",company:"Khushi Fertility Centre",role:"Founder",url:"https://linkedin.com/in/rashmiyogish",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Fertility | ACTIVE – 13K subs, monthly IVF success & tips.",next_action:"",followup_date:"",email:""},
+    {id:"blr-f5",name:"Dr. Rathnamani",company:"Sattva Fertility Center",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"BLR Fertility | LOW – minimal online presence. No LinkedIn.",next_action:"",followup_date:"",email:""},
+    /* ── CHN Physiotherapy ───────────────────────────────────────────────── */
+    {id:"chn-p1",name:"Dr. Kumaran",company:"Synergy Healthcare",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Physio | LOW – 338 subs, 7 videos. No LinkedIn.",next_action:"",followup_date:"",email:""},
+    {id:"chn-p2",name:"Dr. Kannan Pugazhendi",company:"SPARRC Institute",role:"Founder",url:"https://linkedin.com/in/dr-kannan-pugazhendi",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Physio | HEAVY – 190K subs, sports rehab education, weekly.",next_action:"",followup_date:"",email:""},
+    {id:"chn-p3",name:"Dr. Sakthi Vinayagam Nagamani",company:"Physio360",role:"Founder",url:"https://linkedin.com/in/dr-sakthi-vinayagam-nagamani-10093b67",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Physio | ACTIVE – 23K subs, condition-specific videos, bi-weekly.",next_action:"",followup_date:"",email:""},
+    {id:"chn-p4",name:"Kalai",company:"Kinergy Physio",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Physio | LOW – 1.3K subs, 18 videos, last ~1 year. Company LI only.",next_action:"",followup_date:"",email:""},
+    {id:"chn-p5",name:"Dr. S. Vijaya",company:"Vijaya Physiotherapy Clinic",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Physio | LOW – no YouTube found. No LinkedIn.",next_action:"",followup_date:"",email:""},
+    /* ── CHN Dermatology ─────────────────────────────────────────────────── */
+    {id:"chn-d1",name:"Dr. Amin Hanan",company:"Dr. Hanan Dermatology",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Derm | LOW – no YouTube found. No LinkedIn.",next_action:"",followup_date:"",email:""},
+    {id:"chn-d2",name:"Dr. Vatsan V",company:"WEA Skin Clinic",role:"Founder",url:"https://linkedin.com/in/vatsan-vivekanandan-43b84512b",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Derm | ACTIVE – 16K subs, skin science explainers, bi-weekly.",next_action:"",followup_date:"",email:""},
+    {id:"chn-d3",name:"Dr. Janani A. Palanivel",company:"DC Clinic",role:"Founder",url:"https://linkedin.com/in/drjananipalanivel",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Derm | HEAVY – 116K subs, daily Shorts on skin & hair.",next_action:"",followup_date:"",email:"jpalanivel@dermecure.com"},
+    {id:"chn-d4",name:"Dr. Deepika Lunawat",company:"Mahi Skin Hair & Laser Clinic",role:"Founder",url:"https://linkedin.com/in/dr-deepika-lunawat-m-d-09748911",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Derm | ACTIVE – 59K subs, procedure explainers & Q&As, weekly.",next_action:"",followup_date:"",email:""},
+    {id:"chn-d5",name:"Zenderma (Founder not public)",company:"Zenderma",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Derm | ACTIVE – 17K subs, condition-specific edu. Founder name not published.",next_action:"",followup_date:"",email:""},
+    /* ── CHN Dental ──────────────────────────────────────────────────────── */
+    {id:"chn-dn1",name:"Dr. Dilip Kumar",company:"Dr. Dilip Dental Studio",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Dental | LOW – 6 videos, implant & smile makeover. Co-founder Dr. Dhivya. No LinkedIn.",next_action:"",followup_date:"",email:""},
+    {id:"chn-dn2",name:"Dr. S. M. Balaji",company:"Balaji Dental & Craniofacial Hospital",role:"Founder",url:"https://linkedin.com/in/smbalaji",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Dental | HEAVY – 123K subs, complex surgery docs, weekly.",next_action:"",followup_date:"",email:""},
+    {id:"chn-dn3",name:"Dr. Gunaseelan Rajan",company:"Rajan Dental",role:"Founder",url:"https://linkedin.com/in/dr-gunaseelan-rajan-336094b",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Dental | HEAVY – 59K subs, Tamil edu & procedure Shorts, 3/week.",next_action:"",followup_date:"",email:"gunaseelanrajan@rajandental.com"},
+    {id:"chn-dn4",name:"Major Dr. Pravin Prathip",company:"Malligai Dental",role:"Founder",url:"https://linkedin.com/in/pravin-prathip-60ab1593",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Dental | ACTIVE – 13K subs, Tamil patient Q&As, bi-weekly.",next_action:"",followup_date:"",email:""},
+    {id:"chn-dn5",name:"Dr. Faizur Rahmaan",company:"Akeela Dental",role:"Co-Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Dental | ACTIVE – 18K subs, patient walkthrough Shorts. Co-founder Dr. Akeela Rahman. No LinkedIn.",next_action:"",followup_date:"",email:""},
+    /* ── CHN Hair Transplant ─────────────────────────────────────────────── */
+    {id:"chn-h1",name:"Mrs. Praba Reddy",company:"VCare Hair & Skin",role:"Founder & Chairperson",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Hair | ACTIVE – 214K subs, 80+ clinics, emotional patient-story ads. No LinkedIn found.",next_action:"",followup_date:"",email:""},
+    {id:"chn-h2",name:"Dr. Ariganesh Chandrasegaran",company:"DermaClinix Chennai",role:"Founder & Director",url:"https://linkedin.com/in/dr-ariganesh-chandrasegaran-46465b28",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Hair | DORMANT – 2K subs, 44 videos, inactive ~2 years.",next_action:"",followup_date:"",email:"enquiry@hairtransplantchennai.org"},
+    {id:"chn-h3",name:"Dr. Karthik Ram",company:"Chennai Plastic Surgery",role:"Founder & Chief Cosmetic Surgeon",url:"https://linkedin.com/in/drkarthikram",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Hair | HEAVY – 29.4K subs, 935 videos, Tamil explainers, daily uploads.",next_action:"",followup_date:"",email:""},
+    {id:"chn-h4",name:"Dr. Prabhakaran",company:"Dr. Prabhakar Hair Transplant Clinic",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Hair | ACTIVE – 76.9K subs, 483 videos, Tamil/English DHT science, monthly.",next_action:"",followup_date:"",email:""},
+    {id:"chn-h5",name:"Dr. Pradeep Sethi",company:"Eugenix Hair Sciences (Chennai centre)",role:"Founder",url:"https://linkedin.com/in/dr-pradeep-sethi",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Hair | HEAVY – 156K subs, celebrity testimonials & brand films, multiple/week. HQ Gurugram.",next_action:"",followup_date:"",email:"pradeep@eugenix.in"},
+    /* ── CHN Aesthetic ───────────────────────────────────────────────────── */
+    {id:"chn-a1",name:"Dr. T. Rajinikanth",company:"Dr. Aesthetix International Cosmetic Clinic",role:"Practitioner / Co-founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Aesthetic | DORMANT – No YT channel found. Founder not publicly named. Company LI only.",next_action:"",followup_date:"",email:""},
+    {id:"chn-a2",name:"Dr. Bharathi Rajasridhar",company:"The Aesthetic Studio",role:"Founder",url:"https://linkedin.com/in/dr-bharathi-rajasridhar-b82692379",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Aesthetic | LOW – 2.1K subs, 220 videos, long-form paused ~1yr, Shorts ongoing.",next_action:"",followup_date:"",email:""},
+    {id:"chn-a3",name:"Dr. Vishu Priya",company:"ZI Clinic",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Aesthetic | LOW – 147K subs but only 72 videos, long-form ~1yr gap, recent Shorts. No LinkedIn.",next_action:"",followup_date:"",email:""},
+    {id:"chn-a4",name:"Dr. Aishwarya Selvaraj",company:"Skin Envy",role:"Founder & Chief Consultant",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Aesthetic | DORMANT – no YT found. No LinkedIn.",next_action:"",followup_date:"",email:""},
+    {id:"chn-a5",name:"Dr. S. Karthikraja",company:"Aesthetiq Clinic",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Aesthetic | DORMANT – no YT found. No LinkedIn.",next_action:"",followup_date:"",email:""},
+    /* ── CHN Fertility / IVF ─────────────────────────────────────────────── */
+    {id:"chn-f1",name:"Dr. Vani Sundarapandian",company:"Jananam Fertility Centre",role:"Founder & Medical Director",url:"https://linkedin.com/in/dr-vani-sundarapandian-54846978",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Fertility | LOW – 134K subs but slowed, last long-form 4 months ago. IVF patient Shorts.",next_action:"",followup_date:"",email:"vani@jananamfertility.com"},
+    {id:"chn-f2",name:"Dr. Archana Ayyanathan",company:"Dr. Archana IVF & Women Centre",role:"Medical Director & Co-founder",url:"https://linkedin.com/in/archana-ayyanathan-a25b01bb",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Fertility | ACTIVE – 75.2K subs, 608 videos, weekly to fortnightly IVF education.",next_action:"",followup_date:"",email:""},
+    {id:"chn-f3",name:"Dr. S. Samundi Sankari",company:"Srushti Fertility Centre & Women's Hospital",role:"Founder & Chief Consultant",url:"https://linkedin.com/in/drssankari",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Fertility | DORMANT – 581 subs, long-form 2yr gap, recent Shorts only.",next_action:"",followup_date:"",email:"samundi.sankari@srushtihospital.com"},
+    {id:"chn-f4",name:"Dr. V. M. Thomas",company:"Chennai Fertility Centre",role:"Founder",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Fertility | DORMANT – 3.3K subs, 40 videos, last upload ~1yr ago. No LinkedIn.",next_action:"",followup_date:"",email:""},
+    {id:"chn-f5",name:"Dr. Chandralekha",company:"Iswarya Fertility Centre",role:"Founder & Director",url:"",date:"2026-09-30",status:"Researching",message_type:"Connection request",notes:"CHN Fertility | HEAVY – 509K subs, 860 videos, multi-city, several/month.",next_action:"",followup_date:"",email:""}
+  ];
+  /* Normalise and stamp */
+  var ts = Date.now();
+  SEED.forEach(function(l, i) {
+    l.id = l.id || ("seed-" + (ts + i));
+    l.status = normaliseStatus(l.status);
+  });
+  try {
+    localStorage.setItem(KEY_CHECK, JSON.stringify(SEED));
+  } catch(e) { /* storage unavailable */ }
+})();
 
 /* ─── Boot ───────────────────────────────────────────────────────────────── */
 load();
